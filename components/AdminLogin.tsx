@@ -1,19 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import { Lock, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { Lock, User, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
 }
 
 export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "prime2026") {
+    // Valid credentials check
+    const isValidUser = username.trim().toLowerCase() === "admin" || username.trim().toLowerCase() === "primeconnect";
+    const isValidPass = password === "prime2026";
+
+    if (isValidUser && isValidPass) {
       onLoginSuccess();
     } else {
       setError(true);
@@ -35,10 +40,32 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-white/60 mb-2">
-              Admin Access Password
+              Admin Username
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                required
+                placeholder="Enter username..."
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setError(false);
+                }}
+                className={`w-full px-4 py-3.5 pl-11 rounded-xl bg-white/10 border text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm transition-all ${
+                  error ? "border-red-500 bg-red-500/10" : "border-white/10"
+                }`}
+              />
+              <User className="w-4 h-4 text-white/40 absolute left-4 top-1/2 -translate-y-1/2" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-white/60 mb-2">
+              Admin Password
             </label>
             <div className="relative">
               <input
@@ -56,17 +83,18 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
               />
               <Lock className="w-4 h-4 text-white/40 absolute left-4 top-1/2 -translate-y-1/2" />
             </div>
-            {error && (
-              <div className="flex items-center gap-2 text-red-400 text-xs mt-2">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>Incorrect password. (Default is prime2026)</span>
-              </div>
-            )}
           </div>
+
+          {error && (
+            <div className="flex items-center gap-2 text-red-400 text-xs pt-1">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>Invalid username or password. (Username: <strong>admin</strong>, Password: <strong>prime2026</strong>)</span>
+            </div>
+          )}
 
           <button
             type="submit"
-            className="w-full py-4 bg-[#F4821F] text-[#0a192f] font-bold text-base rounded-xl hover:bg-[#F69947] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#F4821F]/20"
+            className="w-full py-4 bg-[#F4821F] text-[#0a192f] font-bold text-base rounded-xl hover:bg-[#F69947] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#F4821F]/20 mt-2"
           >
             <span>Access Dashboard</span>
             <ArrowRight className="w-4 h-4" />
