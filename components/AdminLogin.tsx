@@ -14,9 +14,9 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Valid credentials check
-    const isValidUser = username.trim().toLowerCase() === "admin" || username.trim().toLowerCase() === "primeconnect";
-    const isValidPass = password === "prime2026";
+    // Exact requested credentials check
+    const isValidUser = username.trim() === "admin";
+    const isValidPass = password === "Admin#@2@26#";
 
     if (isValidUser && isValidPass) {
       onLoginSuccess();
@@ -88,7 +88,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
           {error && (
             <div className="flex items-center gap-2 text-red-400 text-xs pt-1">
               <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>Invalid username or password. (Username: <strong>admin</strong>, Password: <strong>prime2026</strong>)</span>
+              <span>Invalid username or password.</span>
             </div>
           )}
 
