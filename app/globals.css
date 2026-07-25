@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy-dark: #0a192f;
+  --color-navy: #0f2b48;
+  --color-navy-light: #1e3a5f;
+  
+  /* Exact Original Site Brand Orange */
+  --color-orange: #F4821F;
+  --color-orange-500: #F4821F;
+  --color-orange-light: #F69947;
+  --color-orange-dark: #D97013;
+  
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a192f;
+  --brand-orange: #F4821F;
+}
+
+/* Custom Exact Color Classes */
+.text-orange {
+  color: #F4821F !important;
+}
+
+.bg-orange {
+  background-color: #F4821F !important;
+}
+
+.border-orange {
+  border-color: #F4821F !important;
+}
+
+.hover\:bg-orange-light:hover {
+  background-color: #F69947 !important;
+}
+
+.hover\:bg-orange-400:hover {
+  background-color: #F69947 !important;
+}
+
+body {
+  background-color: #ffffff;
+  color: #0a192f;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom Sonar Pulse Animation with Exact Hex #F4821F */
+@keyframes sonarPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(244, 130, 31, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(244, 130, 31, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(244, 130, 31, 0);
+  }
+}
+
+.sonar-pulse {
+  animation: sonarPulse 2s infinite;
+}
+
+/* Custom Breathe Glow Animation */
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* Subtle Grid Background Pattern */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.bg-grid-pattern-dark {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+}
