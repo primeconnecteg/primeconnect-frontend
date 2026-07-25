@@ -16,15 +16,33 @@ export default function ContactSection() {
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError("");
+    
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message. Please check your connection and try again.");
+      }
+
       setSubmitted(true);
       setFormData({ name: "", company: "", email: "", message: "" });
-    }, 1000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -155,6 +173,11 @@ export default function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 text-sm font-medium">
+                    {error}
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-semibold text-[#0a192f] mb-2">
                     Your full name
