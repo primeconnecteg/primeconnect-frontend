@@ -23,6 +23,13 @@ import {
   Inbox,
   Filter,
   X,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpDown,
+  CheckSquare,
+  Square,
+  Bell,
+  RotateCcw,
 } from "lucide-react";
 
 interface AdminDashboardProps {
@@ -35,9 +42,50 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [typeFilter, setTypeFilter] = useState<string>("All");
   const [selectedLead, setSelectedLead] = useState<LeadRequest | null>(null);
+  const [isLiveConnected, setIsLiveConnected] = useState(false);
+
+  // High Volume & UX Enhancements State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [newLeadCount, setNewLeadCount] = useState(0);
 
   useEffect(() => {
+    // Initial fetch from stored leads
     setLeads(getStoredLeads());
+
+    // Connect to Backend Real-Time SSE Stream
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const eventSource = new EventSource(`${apiUrl}/api/v1/contact/stream`);
+
+    eventSource.onopen = () => {
+      setIsLiveConnected(true);
+    };
+
+    eventSource.onerror = () => {
+      setIsLiveConnected(false);
+    };
+
+    eventSource.addEventListener("new_lead", (event) => {
+      try {
+        const payload = JSON.parse(event.data);
+        const newLead: LeadRequest = payload.data;
+        if (newLead && newLead.id) {
+          setLeads((prev) => [
+            newLead,
+            ...prev.filter((item) => item.id !== newLead.id),
+          ]);
+          setNewLeadCount((count) => count + 1);
+        }
+      } catch (err) {
+        console.error("Error parsing SSE real-time event:", err);
+      }
+    });
+
+    return () => {
+      eventSource.close();
+    };
   }, []);
 
   const handleStatusChange = (id: string, newStatus: LeadRequest["status"]) => {
@@ -58,6 +106,12 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     }
   };
 
+  // Reset pagination to page 1 whenever filters or search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+    setSelectedIds([]);
+  }, [searchQuery, statusFilter, typeFilter, sortOrder]);
+
   // Filtered Leads Calculation
   const filteredLeads = useMemo(() => {
     return leads.filter((item) => {
@@ -74,6 +128,61 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       return matchesSearch && matchesStatus && matchesType;
     });
   }, [leads, searchQuery, statusFilter, typeFilter]);
+
+  // Sorted Leads Calculation
+  const sortedLeads = useMemo(() => {
+    return [...filteredLeads].sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return sortOrder === "newest" ? timeB - timeA : timeA - timeB;
+    });
+  }, [filteredLeads, sortOrder]);
+
+  // Pagination Calculation
+  const totalPages = Math.max(1, Math.ceil(sortedLeads.length / itemsPerPage));
+  const paginatedLeads = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return sortedLeads.slice(start, start + itemsPerPage);
+  }, [sortedLeads, currentPage, itemsPerPage]);
+
+  // Multi-select actions
+  const toggleSelectAll = () => {
+    if (selectedIds.length === paginatedLeads.length && paginatedLeads.length > 0) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(paginatedLeads.map((item) => item.id));
+    }
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkStatusChange = (newStatus: LeadRequest["status"]) => {
+    let currentLeads = leads;
+    selectedIds.forEach((id) => {
+      currentLeads = updateLeadStatus(id, newStatus);
+    });
+    setLeads(currentLeads);
+    setSelectedIds([]);
+  };
+
+  const handleBulkDelete = () => {
+    if (
+      confirm(
+        `Are you sure you want to delete ${selectedIds.length} selected request(s)?`
+      )
+    ) {
+      let currentLeads = leads;
+      selectedIds.forEach((id) => {
+        currentLeads = deleteLead(id);
+      });
+      setLeads(currentLeads);
+      setSelectedIds([]);
+    }
+  };
 
   // Statistics
   const stats = useMemo(() => {
@@ -135,6 +244,20 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             <img src="/logo.png" alt="Prime Connect EG" className="h-12 w-auto object-contain" />
             <span className="hidden sm:inline-block px-3 py-1 bg-[#F4821F]/10 border border-[#F4821F]/30 text-[#F4821F] rounded-full text-xs font-mono font-semibold">
               Admin Portal
+            </span>
+            <span
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold border ${
+                isLiveConnected
+                  ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                  : "bg-amber-500/10 border-amber-500/30 text-amber-300"
+              }`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  isLiveConnected ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
+                }`}
+              />
+              <span>{isLiveConnected ? "Real-Time Sync" : "Syncing..."}</span>
             </span>
           </div>
 
@@ -205,10 +328,71 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
           </div>
         </div>
 
+        {/* New Lead Real-Time Notification Banner */}
+        {newLeadCount > 0 && (
+          <div className="mb-6 p-4 bg-[#F4821F]/20 border border-[#F4821F]/40 rounded-2xl flex items-center justify-between backdrop-blur-sm shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#F4821F]/20 flex items-center justify-center text-[#F4821F]">
+                <Bell className="w-5 h-5 animate-bounce" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white">
+                  {newLeadCount} new lead{newLeadCount > 1 ? "s" : ""} received in real-time!
+                </p>
+                <p className="text-xs text-white/60">
+                  New submissions have been automatically loaded into your stream.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setCurrentPage(1);
+                setSortOrder("newest");
+                setNewLeadCount(0);
+              }}
+              className="px-4 py-2 bg-[#F4821F] text-[#0a192f] font-bold text-xs rounded-xl hover:bg-orange-400 transition-all cursor-pointer shadow-md"
+            >
+              View Latest
+            </button>
+          </div>
+        )}
+
+        {/* Bulk Actions Toolbar */}
+        {selectedIds.length > 0 && (
+          <div className="mb-6 p-4 bg-[#0f2b48] border border-white/20 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 backdrop-blur-md shadow-xl">
+            <div className="flex items-center gap-2">
+              <CheckSquare className="w-4 h-4 text-[#F4821F]" />
+              <span className="text-sm font-bold text-white">
+                {selectedIds.length} item{selectedIds.length > 1 ? "s" : ""} selected
+              </span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={() => handleBulkStatusChange("Contacted")}
+                className="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold hover:bg-emerald-500/30 transition-all cursor-pointer"
+              >
+                Mark as Contacted
+              </button>
+              <button
+                onClick={() => handleBulkStatusChange("Archived")}
+                className="px-3 py-1.5 bg-white/10 text-white/70 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/20 transition-all cursor-pointer"
+              >
+                Mark as Archived
+              </button>
+              <button
+                onClick={handleBulkDelete}
+                className="px-3 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl text-xs font-bold hover:bg-red-500/30 transition-all cursor-pointer"
+              >
+                Delete Selected
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Filters & Search Controls */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-8 backdrop-blur-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-8 backdrop-blur-sm flex flex-col lg:flex-row items-center justify-between gap-4">
           {/* Search Bar */}
-          <div className="relative w-full md:w-96">
+          <div className="relative w-full lg:w-96">
             <input
               type="text"
               placeholder="Search by Name, Email, or Company..."
@@ -219,8 +403,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
           </div>
 
-          {/* Filters */}
-          <div className="flex items-center gap-3 w-full md:w-auto flex-wrap">
+          {/* Filters & Controls */}
+          <div className="flex items-center gap-3 w-full lg:w-auto flex-wrap justify-between lg:justify-end">
             <div className="flex items-center gap-1.5 bg-white/10 rounded-xl p-1 text-xs">
               <Filter className="w-3.5 h-3.5 text-white/40 ml-2" />
               {["All", "New", "Contacted", "Archived"].map((st) => (
@@ -238,16 +422,28 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
               ))}
             </div>
 
-            {/* Type Select */}
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="px-3 py-2 bg-white/10 border border-white/10 rounded-xl text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#F4821F] cursor-pointer"
-            >
-              <option value="All" className="bg-[#0a192f]">All Types</option>
-              <option value="Discovery Call" className="bg-[#0a192f]">Discovery Call</option>
-              <option value="Contact Form" className="bg-[#0a192f]">Contact Form</option>
-            </select>
+            <div className="flex items-center gap-2">
+              {/* Type Select */}
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/10 rounded-xl text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#F4821F] cursor-pointer"
+              >
+                <option value="All" className="bg-[#0a192f]">All Types</option>
+                <option value="Discovery Call" className="bg-[#0a192f]">Discovery Call</option>
+                <option value="Contact Form" className="bg-[#0a192f]">Contact Form</option>
+              </select>
+
+              {/* Sort Order */}
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as "newest" | "oldest")}
+                className="px-3 py-2 bg-white/10 border border-white/10 rounded-xl text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#F4821F] cursor-pointer"
+              >
+                <option value="newest" className="bg-[#0a192f]">Newest First</option>
+                <option value="oldest" className="bg-[#0a192f]">Oldest First</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -257,6 +453,19 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             <table className="w-full text-left text-sm text-white/80">
               <thead className="bg-white/5 text-xs uppercase font-bold text-white/50 border-b border-white/10">
                 <tr>
+                  <th className="px-4 py-4 w-12 text-center">
+                    <button
+                      onClick={toggleSelectAll}
+                      className="p-1 hover:text-white transition-colors cursor-pointer"
+                      title="Select All on Page"
+                    >
+                      {selectedIds.length > 0 && selectedIds.length === paginatedLeads.length ? (
+                        <CheckSquare className="w-4 h-4 text-[#F4821F]" />
+                      ) : (
+                        <Square className="w-4 h-4 text-white/40" />
+                      )}
+                    </button>
+                  </th>
                   <th className="px-6 py-4">Type</th>
                   <th className="px-6 py-4">Client Name</th>
                   <th className="px-6 py-4">Company</th>
@@ -267,21 +476,36 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {filteredLeads.length === 0 ? (
+                {paginatedLeads.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-white/40">
+                    <td colSpan={8} className="px-6 py-12 text-center text-white/40">
                       No matching lead requests found.
                     </td>
                   </tr>
                 ) : (
-                  filteredLeads.map((item) => {
+                  paginatedLeads.map((item) => {
                     const isNew = item.status === "New";
                     const isCall = item.type === "Discovery Call";
+                    const isSelected = selectedIds.includes(item.id);
                     return (
                       <tr
                         key={item.id}
-                        className="hover:bg-white/5 transition-colors"
+                        className={`hover:bg-white/5 transition-colors ${
+                          isSelected ? "bg-[#F4821F]/10" : ""
+                        }`}
                       >
+                        <td className="px-4 py-4 text-center">
+                          <button
+                            onClick={() => toggleSelectOne(item.id)}
+                            className="p-1 hover:text-white transition-colors cursor-pointer"
+                          >
+                            {isSelected ? (
+                              <CheckSquare className="w-4 h-4 text-[#F4821F]" />
+                            ) : (
+                              <Square className="w-4 h-4 text-white/30" />
+                            )}
+                          </button>
+                        </td>
                         <td className="px-6 py-4">
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -373,6 +597,67 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {sortedLeads.length > 0 && (
+            <div className="px-6 py-4 bg-white/5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
+              <div className="flex items-center gap-4">
+                <span>
+                  Showing{" "}
+                  <strong className="text-white">
+                    {(currentPage - 1) * itemsPerPage + 1}
+                  </strong>{" "}
+                  to{" "}
+                  <strong className="text-white">
+                    {Math.min(currentPage * itemsPerPage, sortedLeads.length)}
+                  </strong>{" "}
+                  of <strong className="text-white">{sortedLeads.length}</strong> entries
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <span>Per page:</span>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => {
+                      setItemsPerPage(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="px-2 py-1 bg-white/10 border border-white/10 rounded-lg text-white font-semibold focus:outline-none cursor-pointer"
+                  >
+                    <option value={10} className="bg-[#0a192f]">10</option>
+                    <option value={25} className="bg-[#0a192f]">25</option>
+                    <option value={50} className="bg-[#0a192f]">50</option>
+                    <option value={100} className="bg-[#0a192f]">100</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Page Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+                  title="Previous Page"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <span className="px-3 py-1 font-bold text-white">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+                  title="Next Page"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 

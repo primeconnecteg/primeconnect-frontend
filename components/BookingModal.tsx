@@ -28,18 +28,33 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     "Thursday, 4:00 PM GMT+3",
   ];
 
-  const handleConfirm = (e: React.FormEvent) => {
+  const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Save discovery call request to lead store
-    saveLead({
+    
+    const payload = {
       name: bookingDetails.name,
       email: bookingDetails.email,
       company: bookingDetails.company || "Not specified",
-      type: "Discovery Call",
       message: `Requested discovery call time slot: ${selectedDate}`,
-    });
+    };
 
-    setStep("confirmed");
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      await fetch(`${apiUrl}/api/v1/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.warn("Could not connect to FastAPI backend for discovery call:", err);
+    } finally {
+      saveLead({
+        ...payload,
+        type: "Discovery Call",
+      });
+
+      setStep("confirmed");
+    }
   };
 
   return (
