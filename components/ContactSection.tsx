@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react";
+import { saveLead } from "@/lib/leadStore";
 
 export default function ContactSection() {
   const ref = useRef(null);
@@ -20,11 +21,21 @@ export default function ContactSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    // Save lead to client store
+    saveLead({
+      name: formData.name,
+      company: formData.company,
+      email: formData.email,
+      message: formData.message,
+      type: "Contact Form",
+    });
+
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
       setFormData({ name: "", company: "", email: "", message: "" });
-    }, 1000);
+    }, 600);
   };
 
   return (
@@ -165,7 +176,7 @@ export default function ContactSection() {
                     placeholder="Your full name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm text-[#0a192f]"
                   />
                 </div>
 
@@ -179,7 +190,7 @@ export default function ContactSection() {
                     placeholder="Your company name"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm text-[#0a192f]"
                   />
                 </div>
 
@@ -193,7 +204,7 @@ export default function ContactSection() {
                     placeholder="your@email.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm text-[#0a192f]"
                   />
                 </div>
 
@@ -207,7 +218,7 @@ export default function ContactSection() {
                     placeholder="Tell us about your outsourcing needs..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm text-[#0a192f] resize-none"
                   />
                 </div>
 
