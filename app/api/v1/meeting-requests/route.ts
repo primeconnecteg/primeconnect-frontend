@@ -5,8 +5,10 @@ import {
   startOfToday,
   validateMeetingRequestForm,
 } from "@/lib/meetingRequest";
-import { createMeetingRequest, hasPendingDuplicate } from "@/lib/meetingRequestStore";
+
 import { sendDiscoveryCallNotifications } from "@/lib/meetingRequestEmail";
+
+import { randomUUID } from "crypto";
 
 export const runtime = "nodejs";
 
@@ -55,26 +57,17 @@ export async function POST(request: Request) {
   const normalizedEmail = normalized.values.businessEmail.trim().toLowerCase();
   const apiMeetingDate = formatMeetingDateForApi(meetingDate);
 
-  if (hasPendingDuplicate(normalizedEmail, apiMeetingDate)) {
-    return NextResponse.json(
-      {
-        error: "A pending request already exists for this email and date.",
-        errors: {
-          businessEmail: "A pending request already exists for this email and date.",
-          meetingDate: "Please choose another date or wait for the existing request to be processed.",
-        },
-      },
-      { status: 409 }
-    );
-  }
-
-  const requestRecord = createMeetingRequest({
-    full_name: normalized.values.fullName.trim(),
-    company_name: normalized.values.companyName.trim(),
-    business_email: normalizedEmail,
-    meeting_date: apiMeetingDate,
-    comment: normalized.values.comment.trim(),
-  });
+  
+  const requestRecord = {
+  id: randomUUID(),
+  full_name: normalized.values.fullName.trim(),
+  company_name: normalized.values.companyName.trim(),
+  business_email: normalizedEmail,
+  meeting_date: apiMeetingDate,
+  comment: normalized.values.comment.trim(),
+  status: "Pending",
+  created_at: new Date().toISOString(),
+};
 
   await sendDiscoveryCallNotifications(requestRecord).catch((error) => {
     console.error("Discovery call email dispatch failed:", error);

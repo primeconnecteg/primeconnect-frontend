@@ -17,7 +17,7 @@ function getResendFromAddress(): string {
 }
 
 async function sendEmail(message: EmailMessage): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
+    const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
     throw new Error("RESEND_API_KEY is not configured.");
@@ -39,8 +39,16 @@ async function sendEmail(message: EmailMessage): Promise<void> {
   });
 
   if (!response.ok) {
-    throw new Error(`Email provider responded with ${response.status}.`);
-  }
+  const error = await response.json().catch(async () => ({
+    message: await response.text(),
+  }));
+
+  console.error("Resend response:", error);
+
+  throw new Error(
+    `Email provider responded with ${response.status}: ${JSON.stringify(error)}`
+  );
+}
 }
 
 function buildInternalEmail(request: MeetingRequestRecord): EmailMessage {
