@@ -9,6 +9,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://primeconnecteg.com"),
+  alternates: {
+    canonical: "/",
+  },
   title: "Prime Connect EG | Egypt's Premier BPO Growth Engine",
   description:
     "A high-performance BPO client acquisition engine connecting elite Egyptian talent with global outsourcing partners to drive seamless growth and CRM-integrated success.",
