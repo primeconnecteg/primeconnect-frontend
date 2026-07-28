@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   title: "Prime Connect EG | Egypt's Premier BPO Growth Engine",
   description:
-    "A high-performance BPO client acquisition engine connecting elite Egyptian talent with global outsourcing partners to drive seamless growth and CRM-integrated success.",
+    "Prime Connect EG connects elite Egyptian professionals with global businesses through customer support, technical helpdesk, CRM integration and BPO outsourcing.",
   keywords: [
     "BPO Egypt",
     "Outsourcing Egypt",
