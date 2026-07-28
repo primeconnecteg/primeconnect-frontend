@@ -1,5 +1,14 @@
 import { formatSelectedDate } from "@/lib/meetingRequest";
-import type { MeetingRequestRecord } from "@/lib/meetingRequestStore";
+interface MeetingRequestRecord {
+  id: string;
+  full_name: string;
+  company_name: string;
+  business_email: string;
+  meeting_date: string;
+  comment: string;
+  status: string;
+  created_at: string;
+}
 
 interface EmailMessage {
   to: string;
