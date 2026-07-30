@@ -45,19 +45,27 @@ export default function ContactSection() {
     };
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const response = await fetch(`${apiUrl}/api/v1/contact`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://primeconnect-api.vercel.app";
+      const targetUrl = `${apiUrl.replace(/\/$/, "")}/api/v1/contact`;
+      
+      console.log("[ContactSection] Submitting payload:", payload);
+
+      const response = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
+      const responseData = await response.json().catch(() => null);
+
+      console.log(`[ContactSection] Backend HTTP Status: ${response.status}`);
+      console.log(`[ContactSection] Backend Response Body:`, responseData);
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.warn("Backend API response error:", errorData);
+        console.warn("[ContactSection] Backend API response error:", responseData);
       }
     } catch (err) {
-      console.warn("Could not connect to FastAPI backend:", err);
+      console.warn("[ContactSection] Could not connect to FastAPI backend:", err);
     } finally {
       // Always save to client lead store so dashboard displays it
       saveLead({
