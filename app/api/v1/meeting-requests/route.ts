@@ -5,16 +5,12 @@ import {
   startOfToday,
   validateMeetingRequestForm,
 } from "@/lib/meetingRequest";
-
 import { sendDiscoveryCallNotifications } from "@/lib/meetingRequestEmail";
-
-import { randomUUID } from "crypto";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   let body: unknown;
-
   try {
     body = await request.json();
   } catch {
@@ -41,7 +37,6 @@ export async function POST(request: Request) {
   }
 
   const meetingDate = normalized.values.meetingDate;
-
   if (!meetingDate || meetingDate < startOfToday()) {
     return NextResponse.json(
       {
@@ -57,17 +52,58 @@ export async function POST(request: Request) {
   const normalizedEmail = normalized.values.businessEmail.trim().toLowerCase();
   const apiMeetingDate = formatMeetingDateForApi(meetingDate);
 
-  
+  const payload = {
+    full_name: normalized.values.fullName.trim(),
+    company_name: normalized.values.companyName.trim(),
+    business_email: normalizedEmail,
+    meeting_date: apiMeetingDate,
+    comment: normalized.values.comment.trim(),
+  };
+
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const fastApiResponse = await fetch(`${apiUrl}/api/v1/meeting-requests`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (fastApiResponse.status === 409) {
+      return NextResponse.json(
+        {
+          error: "A pending request already exists for this email and date.",
+          errors: {
+            businessEmail: "A pending request already exists for this email and date.",
+            meetingDate: "Please choose another date or wait for the existing request to be processed.",
+          },
+        },
+        { status: 409 }
+      );
+    }
+
+    if (!fastApiResponse.ok) {
+      const errorData = await fastApiResponse.json().catch(() => null);
+      console.error("FastAPI Error:", errorData);
+      return NextResponse.json(
+        { error: "Failed to submit request to backend." },
+        { status: 400 }
+      );
+    }
+  } catch (err) {
+    console.error("FastAPI Connection Error:", err);
+    return NextResponse.json(
+      { error: "Could not connect to backend server." },
+      { status: 500 }
+    );
+  }
+
+  // We mock a request record to pass to the email function, matching the type it expects
   const requestRecord = {
-  id: randomUUID(),
-  full_name: normalized.values.fullName.trim(),
-  company_name: normalized.values.companyName.trim(),
-  business_email: normalizedEmail,
-  meeting_date: apiMeetingDate,
-  comment: normalized.values.comment.trim(),
-  status: "Pending",
-  created_at: new Date().toISOString(),
-};
+    id: crypto.randomUUID(),
+    ...payload,
+    status: "Pending",
+    created_at: new Date().toISOString(),
+  };
 
   await sendDiscoveryCallNotifications(requestRecord).catch((error) => {
     console.error("Discovery call email dispatch failed:", error);

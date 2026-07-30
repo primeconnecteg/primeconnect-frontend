@@ -95,8 +95,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     try {
       const payload = toMeetingRequestApiPayload({ ...formValues, meetingDate: selectedDate });
       
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const response = await fetch(`${apiUrl}/api/v1/meeting-requests`, {
+      const response = await fetch("/api/v1/meeting-requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

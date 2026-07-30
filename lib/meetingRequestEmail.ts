@@ -1,5 +1,6 @@
 import { formatSelectedDate } from "@/lib/meetingRequest";
-interface MeetingRequestRecord {
+
+export interface MeetingRequestRecord {
   id: string;
   full_name: string;
   company_name: string;
