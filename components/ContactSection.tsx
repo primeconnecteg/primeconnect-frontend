@@ -3,7 +3,6 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react";
-import { saveLead } from "@/lib/leadStore";
 
 export default function ContactSection() {
   const ref = useRef(null);
@@ -59,12 +58,6 @@ export default function ContactSection() {
     } catch (err) {
       console.warn("Could not connect to FastAPI backend:", err);
     } finally {
-      // Always save to client lead store so dashboard displays it
-      saveLead({
-        ...payload,
-        type: "Contact Form",
-      });
-
       setLoading(false);
       setSubmitted(true);
     }
