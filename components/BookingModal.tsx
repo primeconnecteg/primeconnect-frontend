@@ -174,22 +174,22 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     captionLayout="label"
                     className="w-full max-w-sm"
                     classNames={{
-                      root: "w-full",
+                      root: "w-full relative",
                       months: "w-full",
-                      month: "grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-2 gap-y-3",
-                      month_caption: "col-start-2 row-start-1 flex w-full items-center justify-center",
+                      month: "w-full flex flex-col gap-y-4",
+                      month_caption: "flex w-full items-center justify-center pt-1",
                       caption_label:
                         "text-center text-base sm:text-lg font-bold text-[#0a192f] tracking-[0.02em]",
-                      nav: "contents",
+                      nav: "absolute top-0 left-0 w-full flex justify-between z-10 pointer-events-none",
                       button_previous:
-                        "col-start-1 row-start-1 h-8 w-8 sm:h-9 sm:w-9 justify-self-start rounded-full border border-slate-200 bg-white text-[#0a192f] shadow-sm transition-colors hover:bg-[#F4821F] hover:text-white hover:border-[#F4821F] hover:shadow-md flex items-center justify-center",
+                        "pointer-events-auto h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-slate-200 bg-white text-[#0a192f] shadow-sm transition-colors hover:bg-[#F4821F] hover:text-white hover:border-[#F4821F] hover:shadow-md flex items-center justify-center",
                       button_next:
-                        "col-start-3 row-start-1 h-8 w-8 sm:h-9 sm:w-9 justify-self-end rounded-full border border-slate-200 bg-white text-[#0a192f] shadow-sm transition-colors hover:bg-[#F4821F] hover:text-white hover:border-[#F4821F] hover:shadow-md flex items-center justify-center",
+                        "pointer-events-auto h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-slate-200 bg-white text-[#0a192f] shadow-sm transition-colors hover:bg-[#F4821F] hover:text-white hover:border-[#F4821F] hover:shadow-md flex items-center justify-center",
                       chevron: "h-4 w-4 fill-current",
-                      month_grid: "col-span-3 row-start-2 w-full border-collapse",
+                      month_grid: "w-full border-collapse",
                       weekdays: "w-full",
                       weekday:
-                        "text-center text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.14em] text-[#0a192f]/45",
+                        "text-center text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.14em] text-[#0a192f]/45 pb-2",
                       weeks: "w-full",
                       week: "w-full",
                       day: "text-center",
