@@ -11,14 +11,23 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Exact requested credentials check
-    const isValidUser = username.trim() === "admin";
-    const isValidPass = password === "Admin#@2@26#";
-
-    if (isValidUser && isValidPass) {
+    setLoading(true);
+    setError(false);
+    
+    // Use the login API from leadStore instead of hardcoding
+    const { loginAdmin } = await import("@/lib/leadStore");
+    const token = await loginAdmin(username, password);
+    
+    setLoading(false);
+    
+    if (token) {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("primeconnect_admin_token", token);
+      }
       onLoginSuccess();
     } else {
       setError(true);
