@@ -5,7 +5,6 @@ import {
   startOfToday,
   validateMeetingRequestForm,
 } from "@/lib/meetingRequest";
-import { sendDiscoveryCallNotifications } from "@/lib/meetingRequestEmail";
 
 export const runtime = "nodejs";
 
@@ -20,11 +19,14 @@ export async function POST(request: Request) {
     );
   }
 
+  console.log("[API Route] Received body:", JSON.stringify(body));
+
   const normalized = normalizeMeetingRequestApiPayload(body);
   const validationErrors = validateMeetingRequestForm(normalized.values);
   const combinedErrors = { ...normalized.errors, ...validationErrors };
 
   if (Object.keys(combinedErrors).length > 0) {
+    console.warn("[API Route] Validation errors:", combinedErrors);
     return NextResponse.json(
       {
         error: "Please correct the highlighted fields and try again.",
@@ -48,63 +50,64 @@ export async function POST(request: Request) {
   const normalizedEmail = normalized.values.businessEmail.trim().toLowerCase();
   const apiMeetingDate = formatMeetingDateForApi(meetingDate);
 
-  // Send request to FastAPI backend
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  
+  // Forward to FastAPI backend
+  const apiUrl =
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.API_URL ||
+    "https://primeconnect-api.vercel.app";
+
+  const targetUrl = `${apiUrl.replace(/\/$/, "")}/api/v1/meeting-requests`;
+
+  console.log(`[API Route] Forwarding to FastAPI: ${targetUrl}`);
+
+  const backendPayload = {
+    full_name: normalized.values.fullName.trim(),
+    company_name: normalized.values.companyName.trim(),
+    business_email: normalizedEmail,
+    meeting_date: apiMeetingDate,
+    comment: normalized.values.comment.trim() || undefined,
+  };
+
+  console.log("[API Route] Backend payload:", JSON.stringify(backendPayload));
+
   try {
-    const fastApiResponse = await fetch(`${apiUrl}/api/v1/meeting-requests`, {
+    const fastApiResponse = await fetch(targetUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        full_name: normalized.values.fullName.trim(),
-        company_name: normalized.values.companyName.trim(),
-        business_email: normalizedEmail,
-        meeting_date: apiMeetingDate,
-        comment: normalized.values.comment.trim(),
-      }),
+      body: JSON.stringify(backendPayload),
     });
 
-    if (fastApiResponse.status === 409) {
-      return NextResponse.json(
-        {
-          error: "A pending request already exists for this email and date.",
-          errors: {
-            businessEmail: "A pending request already exists for this email and date.",
-            meetingDate: "Please choose another date or wait for the existing request to be processed.",
-          },
-        },
-        { status: 409 }
-      );
-    }
+    const responseData = await fastApiResponse.json().catch(() => null);
+
+    console.log(`[API Route] FastAPI HTTP Status: ${fastApiResponse.status}`);
+    console.log("[API Route] FastAPI Response:", JSON.stringify(responseData));
 
     if (!fastApiResponse.ok) {
-      console.error("FastAPI Error:", await fastApiResponse.text().catch(() => ""));
+      // Pass exact backend error through — never replace with a generic message
       return NextResponse.json(
-        { error: "Failed to submit request to backend." },
-        { status: 400 }
+        responseData || { error: "Backend error", detail: "No response body" },
+        { status: fastApiResponse.status }
       );
     }
-
-    const requestRecord = await fastApiResponse.json();
-
-    // Send confirmation email
-    await sendDiscoveryCallNotifications(requestRecord).catch((error) => {
-      console.error("Discovery call email dispatch failed:", error);
-    });
 
     return NextResponse.json(
       {
         message: "Meeting request submitted successfully.",
-        request: requestRecord,
+        id: responseData?.id,
+        status: responseData?.status,
       },
       { status: 201 }
     );
-
-  } catch (error) {
-    console.error("Failed to connect to FastAPI:", error);
+  } catch (error: any) {
+    const errMsg = error?.message || String(error);
+    console.error("[API Route] Failed to connect to FastAPI:", errMsg);
     return NextResponse.json(
-      { error: "Could not connect to backend server." },
-      { status: 500 }
+      {
+        error: "proxy_connection_error",
+        message: `Could not connect to backend: ${errMsg}`,
+        detail: `Could not connect to backend: ${errMsg}`,
+      },
+      { status: 502 }
     );
   }
 }

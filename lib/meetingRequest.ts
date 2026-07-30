@@ -97,9 +97,7 @@ export function validateMeetingRequestForm(values: {
   }
 
   if (trimmedComment.length > 5000) {
-    errors.comment = "Comment must be 5,000 characters or fewer.";
-  } else if (trimmedComment.length < 1000) {
-    errors.comment = "Comment must be at least 1,000 characters.";
+    errors.comment = "Comment must be 5,000 characters or fewer."
   }
 
   if (!values.meetingDate) {

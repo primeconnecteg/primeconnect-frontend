@@ -94,7 +94,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
     try {
       const payload = toMeetingRequestApiPayload({ ...formValues, meetingDate: selectedDate });
-      
+
+      console.log("[BookingModal] Submitting payload:", payload);
+
       const response = await fetch("/api/v1/meeting-requests", {
         method: "POST",
         headers: {
@@ -103,27 +105,36 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         body: JSON.stringify(payload),
       });
 
-      const responsePayload = (await response.json().catch(() => null)) as
-        | { error?: string; errors?: MeetingRequestFieldErrors }
+      const responseData = (await response.json().catch(() => null)) as
+        | { detail?: string; error?: string; message?: string; errors?: MeetingRequestFieldErrors }
         | null;
 
+      console.log(`[BookingModal] HTTP Status: ${response.status}`);
+      console.log("[BookingModal] Response Body:", responseData);
+
       if (!response.ok) {
-        if (responsePayload?.errors) {
-          setFieldErrors(responsePayload.errors);
+        // Extract the exact backend message — never replace with a generic fallback
+        const backendMessage =
+          responseData?.detail ||
+          responseData?.message ||
+          responseData?.error ||
+          `Request failed (HTTP ${response.status})`;
+
+        if (responseData?.errors && typeof responseData.errors === "object") {
+          setFieldErrors(responseData.errors);
         }
 
-        setServerError(
-          responsePayload?.error ?? "We could not submit your request right now. Please try again."
-        );
+        setServerError(backendMessage);
         return;
       }
 
       setStep("success");
       setFieldErrors({});
       setServerError(null);
-    } catch (error) {
-      console.error("Failed to submit meeting request:", error);
-      setServerError("We could not submit your request right now. Please try again.");
+    } catch (error: any) {
+      const errMsg = error?.message || String(error);
+      console.error("[BookingModal] Submission exception:", error);
+      setServerError(errMsg || "Failed to connect to server. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
