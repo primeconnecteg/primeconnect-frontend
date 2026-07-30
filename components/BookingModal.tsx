@@ -1,246 +1,357 @@
 "use client";
 
-import React, { useState } from "react";
-import { X, Calendar, Clock, CheckCircle2, Loader2 } from "lucide-react";
-import { createMeetingRequest } from "@/lib/leadStore";
+import React, { useMemo, useState } from "react";
+import { Calendar, CheckCircle2, Loader2, X } from "lucide-react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+import {
+  toMeetingRequestApiPayload,
+  formatSelectedDate,
+  startOfToday,
+  type MeetingRequestFieldErrors,
+  type MeetingRequestFormValues,
+  validateMeetingRequestForm,
+} from "@/lib/meetingRequest";
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const INITIAL_FORM_VALUES: MeetingRequestFormValues = {
+  fullName: "",
+  companyName: "",
+  businessEmail: "",
+  comment: "",
+};
+
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
-  const [selectedDate, setSelectedDate] = useState<string>("Tomorrow, 3:00 PM GMT+3");
-  const [step, setStep] = useState<"time" | "form" | "confirmed">("time");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [step, setStep] = useState<"date" | "form" | "success">("date");
+  const [formValues, setFormValues] = useState<MeetingRequestFormValues>(INITIAL_FORM_VALUES);
+  const [fieldErrors, setFieldErrors] = useState<MeetingRequestFieldErrors>({});
+  const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [bookingDetails, setBookingDetails] = useState({
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-  });
+
+  const today = useMemo(() => startOfToday(), []);
+  const calendarEnd = useMemo(
+    () => new Date(today.getFullYear() + 2, 11, 31),
+    [today]
+  );
+  const commentLength = formValues.comment.length;
+  const isFormValid = Object.keys(
+    validateMeetingRequestForm({ ...formValues, meetingDate: selectedDate })
+  ).length === 0;
 
   if (!isOpen) return null;
 
-  const timeSlots = [
-    "Tomorrow, 2:00 PM GMT+3",
-    "Tomorrow, 3:00 PM GMT+3",
-    "Tomorrow, 5:30 PM GMT+3",
-    "Thursday, 11:00 AM GMT+3",
-    "Thursday, 4:00 PM GMT+3",
-  ];
-
-  const getISODate = (slot: string) => {
-    const today = new Date();
-    if (slot.includes("Tomorrow")) {
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      return tomorrow.toISOString().split("T")[0];
-    } else if (slot.includes("Thursday")) {
-      const date = new Date(today);
-      date.setDate(date.getDate() + ((4 + 7 - date.getDay()) % 7 || 7));
-      return date.toISOString().split("T")[0];
-    }
-    return today.toISOString().split("T")[0];
+  const resetBookingState = () => {
+    setSelectedDate(undefined);
+    setStep("date");
+    setFormValues(INITIAL_FORM_VALUES);
+    setFieldErrors({});
+    setServerError(null);
+    setIsSubmitting(false);
   };
 
-  const handleConfirm = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleClose = () => {
+    resetBookingState();
+    onClose();
+  };
 
-    if (bookingDetails.message.length < 1000) {
-      alert("The message must be at least 1000 characters long.");
+  const handleDateContinue = () => {
+    setFieldErrors({});
+    setServerError(null);
+    setStep("form");
+  };
+
+  const handleFieldChange = <K extends keyof MeetingRequestFormValues>(
+    field: K,
+    value: MeetingRequestFormValues[K]
+  ) => {
+    setFormValues((current) => ({ ...current, [field]: value }));
+    setFieldErrors((current) => ({ ...current, [field]: undefined }));
+    setServerError(null);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const nextErrors = validateMeetingRequestForm({ ...formValues, meetingDate: selectedDate });
+    setFieldErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
+
+    if (!selectedDate) {
+      setFieldErrors((current) => ({ ...current, meetingDate: "Please select a date." }));
       return;
     }
 
     setIsSubmitting(true);
-    
-    const success = await createMeetingRequest({
-      name: bookingDetails.name,
-      email: bookingDetails.email,
-      company: bookingDetails.company || "Not specified",
-      date: getISODate(selectedDate),
-      comment: `Requested time slot: ${selectedDate}\n\nMessage:\n${bookingDetails.message}`,
-    });
-    
-    setIsSubmitting(false);
+    setServerError(null);
 
-    if (success) {
-      setStep("confirmed");
-    } else {
-      alert("Failed to submit request. Please try again.");
+    try {
+      const payload = toMeetingRequestApiPayload({ ...formValues, meetingDate: selectedDate });
+      
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/api/v1/meeting-requests`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responsePayload = (await response.json().catch(() => null)) as
+        | { error?: string; errors?: MeetingRequestFieldErrors }
+        | null;
+
+      if (!response.ok) {
+        if (responsePayload?.errors) {
+          setFieldErrors(responsePayload.errors);
+        }
+
+        setServerError(
+          responsePayload?.error ?? "We could not submit your request right now. Please try again."
+        );
+        return;
+      }
+
+      setStep("success");
+      setFieldErrors({});
+      setServerError(null);
+    } catch (error) {
+      console.error("Failed to submit meeting request:", error);
+      setServerError("We could not submit your request right now. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm"
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div
         className="relative w-full max-w-2xl bg-white rounded-2xl overflow-hidden shadow-2xl border border-[#0a192f]/10 text-slate-900"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#0a192f]/10">
           <div>
             <h3 className="text-lg font-bold text-[#0a192f]">Book a Discovery Call</h3>
-            <p className="text-sm text-[#0a192f]/50">
-              with Yousef Mattar — Prime Connect EG
-            </p>
+            <p className="text-sm text-[#0a192f]/50">with Yousef Mattar — Prime Connect EG</p>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="w-9 h-9 rounded-full flex items-center justify-center text-[#0a192f]/40 hover:bg-[#0a192f]/5 hover:text-[#0a192f] transition-colors"
+            aria-label="Close booking modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Content */}
         <div className="p-6 sm:p-8">
-          {step === "time" && (
+          {step === "date" && (
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-[#0a192f] mb-3 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-[#F4821F]" />
-                  <span>Select a Time Slot</span>
+                  <span>Select a Date</span>
                 </label>
-                <div className="space-y-2">
-                  {timeSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      onClick={() => setSelectedDate(slot)}
-                      className={`w-full text-left p-3.5 rounded-xl border text-sm font-semibold transition-all flex items-center justify-between ${
-                        selectedDate === slot
-                          ? "border-[#F4821F] bg-orange-50 text-orange-950 shadow-sm"
-                          : "border-slate-200 hover:border-slate-300 text-slate-700"
-                      }`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-[#F4821F]" />
-                        {slot}
-                      </span>
-                      {selectedDate === slot && (
-                        <CheckCircle2 className="w-5 h-5 text-[#F4821F]" />
-                      )}
-                    </button>
-                  ))}
+
+                <div className="w-full rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm flex justify-center">
+                  <DayPicker
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    disabled={{ before: today }}
+                    defaultMonth={today}
+                    startMonth={today}
+                    endMonth={calendarEnd}
+                    showOutsideDays={false}
+                    captionLayout="label"
+                    className="w-full max-w-sm"
+                    classNames={{
+                      root: "w-full",
+                      months: "w-full",
+                      month: "grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-2 gap-y-3",
+                      month_caption: "col-start-2 row-start-1 flex w-full items-center justify-center",
+                      caption_label:
+                        "text-center text-base sm:text-lg font-bold text-[#0a192f] tracking-[0.02em]",
+                      nav: "contents",
+                      button_previous:
+                        "col-start-1 row-start-1 h-8 w-8 sm:h-9 sm:w-9 justify-self-start rounded-full border border-slate-200 bg-white text-[#0a192f] shadow-sm transition-colors hover:bg-[#F4821F] hover:text-white hover:border-[#F4821F] hover:shadow-md flex items-center justify-center",
+                      button_next:
+                        "col-start-3 row-start-1 h-8 w-8 sm:h-9 sm:w-9 justify-self-end rounded-full border border-slate-200 bg-white text-[#0a192f] shadow-sm transition-colors hover:bg-[#F4821F] hover:text-white hover:border-[#F4821F] hover:shadow-md flex items-center justify-center",
+                      chevron: "h-4 w-4 fill-current",
+                      month_grid: "col-span-3 row-start-2 w-full border-collapse",
+                      weekdays: "w-full",
+                      weekday:
+                        "text-center text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.14em] text-[#0a192f]/45",
+                      weeks: "w-full",
+                      week: "w-full",
+                      day: "text-center",
+                      day_button:
+                        "mx-auto flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-transparent text-sm font-medium text-[#0a192f] transition-all duration-200 hover:bg-[#F4821F]/10 hover:text-[#0a192f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F4821F] focus-visible:ring-offset-2 focus-visible:ring-offset-white cursor-pointer",
+                    }}
+                    modifiersClassNames={{
+                      today: "[&>button]:!border-[#F4821F] [&>button]:!font-semibold [&>button]:!text-[#0a192f]",
+                      selected:
+                        "[&>button]:!border-0 [&>button]:!bg-[#F4821F] [&>button]:!text-white [&>button]:!shadow-md [&>button]:shadow-[#F4821F]/25 [&>button]:rounded-full",
+                      disabled:
+                        "cursor-not-allowed text-slate-300 opacity-45 hover:bg-transparent hover:text-slate-300",
+                      outside: "text-slate-200 opacity-35",
+                    }}
+                  />
                 </div>
               </div>
 
               <button
-                onClick={() => setStep("form")}
-                className="w-full py-4 rounded-xl bg-[#0a192f] hover:bg-[#F4821F] hover:text-[#0a192f] text-white font-bold text-sm transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                disabled={!selectedDate}
+                onClick={handleDateContinue}
+                className={`w-full py-4 rounded-xl font-bold text-sm transition-all ${
+                  selectedDate
+                    ? "bg-[#0a192f] hover:bg-[#F4821F] hover:text-[#0a192f] text-white cursor-pointer shadow-md"
+                    : "bg-slate-300 text-slate-500 cursor-not-allowed"
+                }`}
               >
-                <span>Continue with Selected Slot</span>
+                Continue
               </button>
             </div>
           )}
 
-          {step === "form" && (
-            <form onSubmit={handleConfirm} className="space-y-4">
-              <div className="p-3.5 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-2 mb-4">
-                <Clock className="w-4 h-4 text-[#F4821F] shrink-0" />
-                <span>Selected: {selectedDate}</span>
+          {step === "form" && selectedDate && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="p-3.5 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700 flex items-start gap-2 mb-4">
+                <Calendar className="w-4 h-4 text-[#F4821F] shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-[#0a192f]">Selected Date:</p>
+                  <p className="text-sm text-slate-700">{formatSelectedDate(selectedDate)}</p>
+                </div>
               </div>
 
+              {serverError && (
+                <div
+                  className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                  role="alert"
+                >
+                  {serverError}
+                </div>
+              )}
+
               <div>
-                <label className="block text-xs font-bold text-[#0a192f] mb-1">
-                  Full Name *
-                </label>
+                <label className="block text-xs font-bold text-[#0a192f] mb-1">Full Name *</label>
                 <input
                   type="text"
                   required
+                  minLength={3}
                   placeholder="Your Full Name"
-                  value={bookingDetails.name}
-                  onChange={(e) => setBookingDetails({ ...bookingDetails, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm"
+                  value={formValues.fullName}
+                  disabled={isSubmitting}
+                  onChange={(event) => handleFieldChange("fullName", event.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm disabled:bg-slate-100 disabled:text-slate-500"
                 />
+                {fieldErrors.fullName && <p className="mt-1 text-xs text-red-600">{fieldErrors.fullName}</p>}
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#0a192f] mb-1">
-                  Business Email *
-                </label>
+                <label className="block text-xs font-bold text-[#0a192f] mb-1">Company Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Company Name"
+                  value={formValues.companyName}
+                  disabled={isSubmitting}
+                  onChange={(event) => handleFieldChange("companyName", event.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm disabled:bg-slate-100 disabled:text-slate-500"
+                />
+                {fieldErrors.companyName && (
+                  <p className="mt-1 text-xs text-red-600">{fieldErrors.companyName}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#0a192f] mb-1">Business Email *</label>
                 <input
                   type="email"
                   required
                   placeholder="your@email.com"
-                  value={bookingDetails.email}
-                  onChange={(e) => setBookingDetails({ ...bookingDetails, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm"
+                  value={formValues.businessEmail}
+                  disabled={isSubmitting}
+                  onChange={(event) => handleFieldChange("businessEmail", event.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm disabled:bg-slate-100 disabled:text-slate-500"
                 />
+                {fieldErrors.businessEmail && (
+                  <p className="mt-1 text-xs text-red-600">{fieldErrors.businessEmail}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#0a192f] mb-1">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Company Name"
-                  value={bookingDetails.company}
-                  onChange={(e) => setBookingDetails({ ...bookingDetails, company: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#0a192f] mb-1">
-                  Message / Details (Min 1000 characters) *
-                </label>
+                <label className="block text-xs font-bold text-[#0a192f] mb-1">Message / Details (Min 1000 characters) *</label>
                 <textarea
                   required
-                  rows={4}
-                  placeholder="Please describe your needs..."
-                  value={bookingDetails.message}
-                  onChange={(e) => setBookingDetails({ ...bookingDetails, message: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm resize-none"
+                  minLength={1000}
+                  placeholder="Share any context that would help us prepare for the call..."
+                  value={formValues.comment}
+                  disabled={isSubmitting}
+                  maxLength={5000}
+                  rows={5}
+                  onChange={(event) => handleFieldChange("comment", event.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm resize-none disabled:bg-slate-100 disabled:text-slate-500"
                 />
-                <div className="text-right mt-1">
-                  <span className={`text-[10px] font-bold ${bookingDetails.message.length < 1000 ? "text-red-500" : "text-emerald-500"}`}>
-                    {bookingDetails.message.length} / 1000 min chars
+                <div className="mt-1 flex items-center justify-between gap-3 text-xs text-slate-500 font-bold">
+                  <span>
+                    {fieldErrors.comment && <span className="text-red-600">{fieldErrors.comment}</span>}
                   </span>
+                  <span className={commentLength < 1000 ? "text-red-500" : "text-emerald-500"}>{commentLength} / 1000 min chars</span>
                 </div>
               </div>
 
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setStep("time")}
-                  className="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer"
+                  onClick={() => setStep("date")}
+                  disabled={isSubmitting}
+                  className="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Back
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-2/3 py-3 rounded-xl bg-[#F4821F] hover:bg-[#F69947] text-[#0a192f] font-bold text-sm shadow-md cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  disabled={isSubmitting || !isFormValid}
+                  className="w-2/3 py-3 rounded-xl bg-[#F4821F] hover:bg-[#F69947] text-[#0a192f] font-bold text-sm shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                  <span>{isSubmitting ? "Confirming..." : "Confirm Meeting"}</span>
+                  {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                  <span>{isSubmitting ? "Submitting..." : "Request Discovery Call"}</span>
                 </button>
               </div>
             </form>
           )}
 
-          {step === "confirmed" && (
-            <div className="text-center py-6 space-y-4">
+          {step === "success" && (
+            <div className="text-center py-6 space-y-5">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h4 className="text-2xl font-black text-[#0a192f]">Call Scheduled!</h4>
-              <p className="text-sm text-slate-600">
-                A calendar invitation for <strong className="text-slate-900">{selectedDate}</strong> has been prepared for <strong className="text-slate-900">{bookingDetails.email || "your email"}</strong>.
-              </p>
+
+              <div className="space-y-3">
+                <h4 className="text-2xl font-black text-[#0a192f]">Thank you!</h4>
+                <p className="text-sm text-slate-600">
+                  Your discovery call request has been received successfully.
+                </p>
+                <p className="text-sm text-slate-600">
+                  Our team will review your request and contact you shortly.
+                </p>
+              </div>
+
               <button
-                onClick={() => {
-                  setStep("time");
-                  onClose();
-                }}
+                onClick={handleClose}
                 className="w-full py-3 bg-[#0a192f] text-white font-bold text-sm rounded-xl hover:bg-slate-800 transition-colors cursor-pointer"
               >
-                Close Window
+                Back to Home
               </button>
             </div>
           )}
