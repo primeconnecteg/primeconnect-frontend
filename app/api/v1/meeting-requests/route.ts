@@ -15,9 +15,7 @@ export async function POST(request: Request) {
     body = await request.json();
   } catch {
     return NextResponse.json(
-      {
-        error: "Invalid request payload.",
-      },
+      { error: "Invalid request payload." },
       { status: 400 }
     );
   }
@@ -41,9 +39,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error: "Meeting date must be today or a future date.",
-        errors: {
-          meetingDate: "Please select today or a future date.",
-        },
+        errors: { meetingDate: "Please select today or a future date." },
       },
       { status: 400 }
     );
@@ -52,20 +48,20 @@ export async function POST(request: Request) {
   const normalizedEmail = normalized.values.businessEmail.trim().toLowerCase();
   const apiMeetingDate = formatMeetingDateForApi(meetingDate);
 
-  const payload = {
-    full_name: normalized.values.fullName.trim(),
-    company_name: normalized.values.companyName.trim(),
-    business_email: normalizedEmail,
-    meeting_date: apiMeetingDate,
-    comment: normalized.values.comment.trim(),
-  };
-
+  // Send request to FastAPI backend
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     const fastApiResponse = await fetch(`${apiUrl}/api/v1/meeting-requests`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        full_name: normalized.values.fullName.trim(),
+        company_name: normalized.values.companyName.trim(),
+        business_email: normalizedEmail,
+        meeting_date: apiMeetingDate,
+        comment: normalized.values.comment.trim(),
+      }),
     });
 
     if (fastApiResponse.status === 409) {
@@ -82,38 +78,33 @@ export async function POST(request: Request) {
     }
 
     if (!fastApiResponse.ok) {
-      const errorData = await fastApiResponse.json().catch(() => null);
-      console.error("FastAPI Error:", errorData);
+      console.error("FastAPI Error:", await fastApiResponse.text().catch(() => ""));
       return NextResponse.json(
         { error: "Failed to submit request to backend." },
         { status: 400 }
       );
     }
-  } catch (err) {
-    console.error("FastAPI Connection Error:", err);
+
+    const requestRecord = await fastApiResponse.json();
+
+    // Send confirmation email
+    await sendDiscoveryCallNotifications(requestRecord).catch((error) => {
+      console.error("Discovery call email dispatch failed:", error);
+    });
+
+    return NextResponse.json(
+      {
+        message: "Meeting request submitted successfully.",
+        request: requestRecord,
+      },
+      { status: 201 }
+    );
+
+  } catch (error) {
+    console.error("Failed to connect to FastAPI:", error);
     return NextResponse.json(
       { error: "Could not connect to backend server." },
       { status: 500 }
     );
   }
-
-  // We mock a request record to pass to the email function, matching the type it expects
-  const requestRecord = {
-    id: crypto.randomUUID(),
-    ...payload,
-    status: "Pending",
-    created_at: new Date().toISOString(),
-  };
-
-  await sendDiscoveryCallNotifications(requestRecord).catch((error) => {
-    console.error("Discovery call email dispatch failed:", error);
-  });
-
-  return NextResponse.json(
-    {
-      message: "Meeting request submitted successfully.",
-      request: requestRecord,
-    },
-    { status: 201 }
-  );
 }
