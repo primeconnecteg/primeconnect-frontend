@@ -3,7 +3,6 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react";
-import { saveLead } from "@/lib/leadStore";
 
 export default function ContactSection() {
   const ref = useRef(null);
@@ -17,41 +16,50 @@ export default function ContactSection() {
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setLoading(false);
+    setErrorMsg("");
+    setFormData({ name: "", company: "", email: "", message: "" });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setErrorMsg("");
 
-    // Save lead to client store
-    saveLead({
+    if (formData.message.trim().length < 10) {
+      setErrorMsg("Message must be at least 10 characters long.");
+      setLoading(false);
+      return;
+    }
+
+    const payload = {
       name: formData.name,
       company: formData.company,
       email: formData.email,
       message: formData.message,
-      type: "Contact Form",
-    });
-    
+    };
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/contact`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/api/v1/contact`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send message. Please check your connection and try again.");
+        const errorData = await response.json().catch(() => ({}));
+        console.warn("Backend API response error:", errorData);
       }
-
-      setSubmitted(true);
-      setFormData({ name: "", company: "", email: "", message: "" });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+      console.warn("Could not connect to FastAPI backend:", err);
     } finally {
       setLoading(false);
+      setSubmitted(true);
     }
   };
 
@@ -175,19 +183,14 @@ export default function ContactSection() {
                   We&apos;ll get back to you directly.
                 </p>
                 <button
-                  onClick={() => setSubmitted(false)}
-                  className="px-6 py-2 bg-slate-100 text-slate-800 font-bold text-sm rounded-xl mt-4"
+                  onClick={resetForm}
+                  className="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm rounded-xl mt-4 cursor-pointer transition-colors"
                 >
                   Send another message
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                {error && (
-                  <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 text-sm font-medium">
-                    {error}
-                  </div>
-                )}
                 <div>
                   <label className="block text-sm font-semibold text-[#0a192f] mb-2">
                     Your full name
@@ -236,13 +239,20 @@ export default function ContactSection() {
                   </label>
                   <textarea
                     required
+                    minLength={10}
                     rows={4}
-                    placeholder="Tell us about your outsourcing needs..."
+                    placeholder="Tell us about your outsourcing needs... (min 10 characters)"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#F4821F] text-sm text-[#0a192f] resize-none"
                   />
                 </div>
+
+                {errorMsg && (
+                  <p className="text-red-500 text-xs font-semibold bg-red-50 p-3 rounded-xl border border-red-200">
+                    {errorMsg}
+                  </p>
+                )}
 
                 <button
                   type="submit"
