@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Calendar, Clock, CheckCircle2 } from "lucide-react";
+import { X, Calendar, Clock, CheckCircle2, Loader2 } from "lucide-react";
+import { createMeetingRequest } from "@/lib/leadStore";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -11,10 +12,12 @@ interface BookingModalProps {
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [selectedDate, setSelectedDate] = useState<string>("Tomorrow, 3:00 PM GMT+3");
   const [step, setStep] = useState<"time" | "form" | "confirmed">("time");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingDetails, setBookingDetails] = useState({
     name: "",
     email: "",
     company: "",
+    message: "",
   });
 
   if (!isOpen) return null;
@@ -27,9 +30,45 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     "Thursday, 4:00 PM GMT+3",
   ];
 
-  const handleConfirm = (e: React.FormEvent) => {
+  const getISODate = (slot: string) => {
+    const today = new Date();
+    if (slot.includes("Tomorrow")) {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split("T")[0];
+    } else if (slot.includes("Thursday")) {
+      const date = new Date(today);
+      date.setDate(date.getDate() + ((4 + 7 - date.getDay()) % 7 || 7));
+      return date.toISOString().split("T")[0];
+    }
+    return today.toISOString().split("T")[0];
+  };
+
+  const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep("confirmed");
+
+    if (bookingDetails.message.length < 1000) {
+      alert("The message must be at least 1000 characters long.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    const success = await createMeetingRequest({
+      name: bookingDetails.name,
+      email: bookingDetails.email,
+      company: bookingDetails.company || "Not specified",
+      date: getISODate(selectedDate),
+      comment: `Requested time slot: ${selectedDate}\n\nMessage:\n${bookingDetails.message}`,
+    });
+    
+    setIsSubmitting(false);
+
+    if (success) {
+      setStep("confirmed");
+    } else {
+      alert("Failed to submit request. Please try again.");
+    }
   };
 
   return (
@@ -63,7 +102,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-[#0a192f] mb-3 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-orange-500" />
+                  <Calendar className="w-4 h-4 text-[#F4821F]" />
                   <span>Select a Time Slot</span>
                 </label>
                 <div className="space-y-2">
@@ -73,16 +112,16 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       onClick={() => setSelectedDate(slot)}
                       className={`w-full text-left p-3.5 rounded-xl border text-sm font-semibold transition-all flex items-center justify-between ${
                         selectedDate === slot
-                          ? "border-orange-500 bg-orange-50 text-orange-950 shadow-sm"
+                          ? "border-[#F4821F] bg-orange-50 text-orange-950 shadow-sm"
                           : "border-slate-200 hover:border-slate-300 text-slate-700"
                       }`}
                     >
                       <span className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-orange-500" />
+                        <Clock className="w-4 h-4 text-[#F4821F]" />
                         {slot}
                       </span>
                       {selectedDate === slot && (
-                        <CheckCircle2 className="w-5 h-5 text-orange-500" />
+                        <CheckCircle2 className="w-5 h-5 text-[#F4821F]" />
                       )}
                     </button>
                   ))}
@@ -91,7 +130,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               <button
                 onClick={() => setStep("form")}
-                className="w-full py-4 rounded-xl bg-[#0a192f] hover:bg-orange-500 hover:text-slate-950 text-white font-bold text-sm transition-all shadow-lg flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-xl bg-[#0a192f] hover:bg-[#F4821F] hover:text-[#0a192f] text-white font-bold text-sm transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Continue with Selected Slot</span>
               </button>
@@ -101,7 +140,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === "form" && (
             <form onSubmit={handleConfirm} className="space-y-4">
               <div className="p-3.5 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-2 mb-4">
-                <Clock className="w-4 h-4 text-orange-500 shrink-0" />
+                <Clock className="w-4 h-4 text-[#F4821F] shrink-0" />
                 <span>Selected: {selectedDate}</span>
               </div>
 
@@ -115,7 +154,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   placeholder="Your Full Name"
                   value={bookingDetails.name}
                   onChange={(e) => setBookingDetails({ ...bookingDetails, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm"
                 />
               </div>
 
@@ -129,7 +168,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   placeholder="your@email.com"
                   value={bookingDetails.email}
                   onChange={(e) => setBookingDetails({ ...bookingDetails, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm"
                 />
               </div>
 
@@ -142,23 +181,44 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   placeholder="Company Name"
                   value={bookingDetails.company}
                   onChange={(e) => setBookingDetails({ ...bookingDetails, company: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#0a192f] mb-1">
+                  Message / Details (Min 1000 characters) *
+                </label>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="Please describe your needs..."
+                  value={bookingDetails.message}
+                  onChange={(e) => setBookingDetails({ ...bookingDetails, message: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#F4821F] focus:outline-none text-sm resize-none"
+                />
+                <div className="text-right mt-1">
+                  <span className={`text-[10px] font-bold ${bookingDetails.message.length < 1000 ? "text-red-500" : "text-emerald-500"}`}>
+                    {bookingDetails.message.length} / 1000 min chars
+                  </span>
+                </div>
               </div>
 
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setStep("time")}
-                  className="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
+                  className="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer"
                 >
                   Back
                 </button>
                 <button
                   type="submit"
-                  className="w-2/3 py-3 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold text-sm shadow-md"
+                  disabled={isSubmitting}
+                  className="w-2/3 py-3 rounded-xl bg-[#F4821F] hover:bg-[#F69947] text-[#0a192f] font-bold text-sm shadow-md cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Confirm Meeting
+                  {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                  <span>{isSubmitting ? "Confirming..." : "Confirm Meeting"}</span>
                 </button>
               </div>
             </form>
@@ -178,7 +238,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   setStep("time");
                   onClose();
                 }}
-                className="w-full py-3 bg-[#0a192f] text-white font-bold text-sm rounded-xl hover:bg-slate-800 transition-colors"
+                className="w-full py-3 bg-[#0a192f] text-white font-bold text-sm rounded-xl hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 Close Window
               </button>
