@@ -2,17 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  FileText,
-  Compass,
-  Cpu,
-  Wrench,
-  Layers,
-  CheckCircle2,
-  Headphones,
-  ArrowRight,
-  ChevronRight
-} from "lucide-react";
+import { PhoneCall, Compass, Send, Users, Database, TrendingUp, CheckCircle2 } from "lucide-react";
 
 export default function BusinessProcess() {
   const [activeStep, setActiveStep] = useState(0);
@@ -20,188 +10,168 @@ export default function BusinessProcess() {
   const steps = [
     {
       num: "01",
-      title: "Consultation & Site Survey",
-      subtitle: "Discovery & Operational Assessment",
-      icon: FileText,
-      desc: "Our senior integration engineers conduct comprehensive on-site surveys, evaluating truck traffic flow, existing gate mechanics, lighting conditions, network backbone topology, and TOS software interfaces."
+      phase: "Acquisition Phase",
+      title: "Discovery Call",
+      icon: PhoneCall,
+      desc: "30-minute discovery call — your target profile is documented, ideal client persona created, and campaign strategy aligned."
     },
     {
       num: "02",
-      title: "Feasibility & Architecture Planning",
-      subtitle: "Blueprint & Specs",
+      phase: "Acquisition Phase",
+      title: "Strategy Build",
       icon: Compass,
-      desc: "We engineer precise CAD blueprints, camera optical line-of-sight calculations, electrical load distributions, optical fiber ring topologies, and high-level software API integration schemas."
+      desc: "Custom outreach strategy built specifically for your market, target geography (USA, UK, Canada, Australia, GCC), and service offering."
     },
     {
       num: "03",
-      title: "Engineering & Procurement",
-      subtitle: "Industrial Sourcing",
-      icon: Cpu,
-      desc: "Procurement of industrial-grade OCR cameras, pulse illuminators, heavy-duty barrier arms, server racks, and PLC control cabinets from verified partners (Cisco, Siemens, Honeywell, Hikvision)."
+      phase: "Acquisition Phase",
+      title: "Outreach Begins",
+      icon: Send,
+      desc: "Multi-channel outreach begins within 7 business days of strategy approval, engaging decision-makers via LinkedIn and direct email."
     },
     {
       num: "04",
-      title: "On-Site Installation & Mounting",
-      subtitle: "Civil & Hardware Assembly",
-      icon: Wrench,
-      desc: "Our field engineering teams execute civil mounting gantries, trenching, fiber optic fusion splicing, IP camera calibration, and electrical cabinet wiring with strict ISO 45001 safety standards."
+      phase: "Integration Phase",
+      title: "Qualified Prospects",
+      icon: Users,
+      desc: "Qualified, decision-maker level conversations presented within 30 to 45 days for your team to meet and close."
     },
     {
       num: "05",
-      title: "TOS & ERP Middleware Integration",
-      subtitle: "Hardware-to-Software Sync",
-      icon: Layers,
-      desc: "Deployment of Prime Connect's high-speed OCR/LPR middleware, configuring direct API endpoints with Navis N4, COSMOS, SAP, or custom port terminal databases with sub-second latency."
+      phase: "Integration Phase",
+      title: "CRM Handoff",
+      icon: Database,
+      desc: "Signed clients transferred to your CRM environment immediately — structured, organized, and ready for operations (Powered by All States Careers)."
     },
     {
       num: "06",
-      title: "Stress Testing & Commissioning",
-      subtitle: "Validation & Calibration",
-      icon: CheckCircle2,
-      desc: "Rigorous 72-hour continuous live traffic testing, optical camera calibration under extreme night glare/rain conditions, and end-to-end failover validation prior to final handover."
-    },
-    {
-      num: "07",
-      title: "24/7 SLA Support & Maintenance",
-      subtitle: "Lifecycle Operational SLA",
-      icon: Headphones,
-      desc: "Continuous remote node telemetry monitoring, scheduled preventative maintenance visits, emergency spare parts inventory, and guaranteed 4-hour on-site engineering response."
+      phase: "Integration Phase",
+      title: "Review & Scale",
+      icon: TrendingUp,
+      desc: "Monthly review calls to refine strategy, optimize outreach performance, increase volume, and scale your client base."
     }
   ];
 
   return (
-    <section id="process" className="py-24 bg-[#04143F] relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
+    <section id="process" className="py-24 bg-[#F3F3F6] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#082A78]/80 border border-[#08BEEA]/30 backdrop-blur-md">
-            <Compass className="w-4 h-4 text-[#08BEEA]" />
-            <span className="text-xs font-semibold text-[#08BEEA] uppercase tracking-wider">
-              Turnkey Delivery Methodology
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight font-heading">
-            Our End-to-End <span className="gradient-text">Engineering Lifecycle</span>
+          <span className="px-3.5 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold uppercase tracking-wider border border-purple-200 inline-block">
+            The Process
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-heading leading-tight">
+            From Discovery to <span className="purple-underline text-purple-600">Signed Clients</span>
           </h2>
-          <p className="text-base sm:text-lg text-slate-300">
-            A structured, 7-stage execution process ensuring seamless integration, zero operational disruption, and guaranteed performance.
+          <p className="text-base sm:text-lg text-slate-600 font-sans leading-relaxed">
+            A transparent, 6-step pipeline taking you from initial conversation to a growing, managed client portfolio.
           </p>
         </div>
 
-        {/* Step Navigation Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-12">
+        {/* Pipeline Step Tabs (Framer Style) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
           {steps.map((s, idx) => (
             <button
               key={idx}
               onClick={() => setActiveStep(idx)}
-              className={`p-3 rounded-xl border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer ${
+              className={`p-4 rounded-2xl border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer ${
                 activeStep === idx
-                  ? "bg-gradient-to-br from-[#075CE0] to-[#082A78] border-[#08BEEA] text-white shadow-lg shadow-[#075CE0]/30"
-                  : "bg-[#082A78]/30 hover:bg-[#082A78]/60 border-white/10 text-slate-400"
+                  ? "bg-purple-600 border-purple-600 text-white shadow-lg shadow-purple-600/30 scale-[1.02]"
+                  : "bg-white border-slate-200 text-slate-700 hover:border-purple-300"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold">{s.num}</span>
-                {activeStep === idx && <span className="w-2 h-2 rounded-full bg-[#08BEEA] animate-pulse" />}
+                <span className={`text-xs font-bold font-mono ${activeStep === idx ? "text-purple-200" : "text-purple-600"}`}>
+                  STEP {s.num}
+                </span>
+                {activeStep === idx && <span className="w-2 h-2 rounded-full bg-[#B4F600] animate-pulse" />}
               </div>
-              <span className="text-xs font-bold font-heading truncate mt-2 text-white">
-                {s.title.split(" ")[0]} {s.title.split(" ")[1]}
+              <span className="text-xs font-bold font-heading truncate mt-3">
+                {s.title}
               </span>
             </button>
           ))}
         </div>
 
-        {/* Active Stage Detailed Display Card */}
-        <div className="bg-[#082A78]/40 border border-white/15 rounded-3xl p-6 sm:p-10 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#08BEEA]/10 blur-[120px] rounded-full pointer-events-none" />
-
+        {/* Selected Step Display Card */}
+        <motion.div
+          key={activeStep}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="framer-card p-8 md:p-12 border-slate-200/90 relative overflow-hidden"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Stage Details */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#075CE0] to-[#08BEEA] border border-white/20 flex items-center justify-center text-white shadow-lg">
-                  {React.createElement(steps[activeStep].icon, { className: "w-7 h-7" })}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-lg shadow-purple-600/30">
+                  {React.createElement(steps[activeStep].icon, { className: "w-8 h-8" })}
                 </div>
-
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-[#08BEEA] bg-[#04143F] px-2.5 py-0.5 rounded border border-[#08BEEA]/30">
-                      PHASE {steps[activeStep].num} OF 07
-                    </span>
-                    <span className="text-xs font-semibold text-slate-300">
-                      {steps[activeStep].subtitle}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-heading mt-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+                    {steps[activeStep].phase} — STEP {steps[activeStep].num}
+                  </span>
+                  <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900 font-heading mt-2">
                     {steps[activeStep].title}
                   </h3>
                 </div>
               </div>
 
-              <p className="text-base text-slate-200 leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
                 {steps[activeStep].desc}
               </p>
 
-              {/* Stage Progress Connector Bar */}
-              <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+              <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
                     disabled={activeStep === 0}
-                    className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-semibold disabled:opacity-30 cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold disabled:opacity-40 cursor-pointer transition-colors"
                   >
-                    Previous Phase
+                    ← Previous Step
                   </button>
-
                   <button
                     onClick={() => setActiveStep((prev) => Math.min(steps.length - 1, prev + 1))}
                     disabled={activeStep === steps.length - 1}
-                    className="px-4 py-2 rounded-lg bg-[#075CE0] hover:bg-[#08BEEA] text-white text-xs font-semibold disabled:opacity-30 flex items-center gap-1 cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold disabled:opacity-40 cursor-pointer transition-colors shadow-md"
                   >
-                    <span>Next Phase</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    Next Step →
                   </button>
                 </div>
-
-                <span className="text-xs font-mono text-slate-400 hidden sm:inline">
-                  System Integration Guarantee Enabled
+                <span className="text-xs font-medium text-slate-400">
+                  Step {activeStep + 1} of 6 in Pipeline
                 </span>
               </div>
             </div>
 
-            {/* Right Stage Summary Checklist */}
-            <div className="lg:col-span-4 bg-[#04143F]/80 p-6 rounded-2xl border border-white/10 space-y-4">
-              <span className="text-xs font-bold text-[#08BEEA] uppercase tracking-wider block">
-                Deliverables & Quality Checks
+            {/* Stage Guarantee Checklist */}
+            <div className="lg:col-span-4 bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+              <span className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                Standard Operational Protocols
               </span>
-
               <ul className="space-y-3">
-                <li className="flex items-start gap-2.5 text-xs text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-[#08BEEA] shrink-0 mt-0.5" />
-                  <span>ISO 9001 quality compliance documentation</span>
+                <li className="flex items-start gap-2.5 text-xs font-medium text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                  <span>Target profile alignment & verification</span>
                 </li>
-                <li className="flex items-start gap-2.5 text-xs text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-[#08BEEA] shrink-0 mt-0.5" />
-                  <span>Sub-second TOS API sync verification</span>
+                <li className="flex items-start gap-2.5 text-xs font-medium text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                  <span>Verified decision-maker contact discovery</span>
                 </li>
-                <li className="flex items-start gap-2.5 text-xs text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-[#08BEEA] shrink-0 mt-0.5" />
-                  <span>Fluke OTDR certified optical fiber test report</span>
+                <li className="flex items-start gap-2.5 text-xs font-medium text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                  <span>Structured CRM handoff via All States Careers</span>
                 </li>
-                <li className="flex items-start gap-2.5 text-xs text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-[#08BEEA] shrink-0 mt-0.5" />
-                  <span>Comprehensive user & operator training manuals</span>
+                <li className="flex items-start gap-2.5 text-xs font-medium text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                  <span>Backstop with 45-Day Performance Guarantee</span>
                 </li>
               </ul>
             </div>
-
           </div>
-        </div>
-
+        </motion.div>
       </div>
     </section>
   );
 }
+

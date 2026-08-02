@@ -1,67 +1,89 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: var(--font-poppins), sans-serif;
-  --font-sans: var(--font-vietnam), system-ui, sans-serif;
+  --font-heading: var(--font-heading), 'Be Vietnam Pro', system-ui, sans-serif;
+  --font-sans: var(--font-sans), 'Inter', system-ui, sans-serif;
 }
 
 :root {
-  --color-prime-blue: #082A78;
-  --color-deep-navy: #04143F;
-  --color-cobalt: #075CE0;
-  --color-cyan: #08BEEA;
+  --bg-main: #F3F3F6;
+  --color-purple: #7C3AED;
+  --color-purple-hover: #6D28D9;
+  --color-lime: #B4F600;
+  --color-lime-hover: #A3DE00;
+  --color-dark: #0F172A;
+  --color-dark-muted: #334155;
+  --color-gray-subtle: #64748B;
+  --color-gray-bg: #E2E8F0;
   --color-white: #FFFFFF;
-  --color-off-white: #F2F4F7;
-  --color-graphite: #0A0C0D;
-  --color-steel: #5F6C7C;
 }
 
 body {
-  background-color: var(--color-off-white);
-  color: var(--color-graphite);
+  background-color: var(--bg-main);
+  color: var(--color-dark);
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Typography styles matching exactly Framer inspector */
-.heading-display {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 6vw, 72px);
-  line-height: 1.05; /* 75.6px / 72px */
-  letter-spacing: -3px;
-  font-weight: 500;
-  color: var(--color-graphite);
+/* Framer Card Shadows & Shapes */
+.framer-card {
+  background-color: #FFFFFF;
+  border-radius: 1.75rem; /* 28px */
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.text-paragraph {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  line-height: 27px;
-  font-weight: 500;
-  color: var(--color-steel);
+.framer-card:hover {
+  box-shadow: 0 20px 40px -15px rgba(124, 58, 237, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
 }
 
-.hand-drawn-underline {
+.lime-card {
+  background-color: var(--color-lime);
+  color: var(--color-dark);
+  border-radius: 1.75rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lime-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 30px -10px rgba(180, 246, 0, 0.4);
+}
+
+/* Hand Drawn Underline Accent */
+.purple-underline {
   position: relative;
   display: inline-block;
   z-index: 1;
 }
 
-.hand-drawn-underline::after {
+.purple-underline::after {
   content: '';
   position: absolute;
-  bottom: 0.1em;
+  bottom: 0.05em;
   left: -2%;
   width: 104%;
   height: 0.35em;
-  background-color: var(--color-cobalt);
-  opacity: 0.8;
+  background-color: var(--color-purple);
+  opacity: 0.85;
   z-index: -1;
-  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; /* Squiggly hand-drawn effect */
-  transform: rotate(-1.5deg);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  transform: rotate(-1.2deg);
 }
 
-.framer-card-shadow {
-  box-shadow: rgba(0, 0, 0, 0.1) 5px 25px 25px 0px;
+/* Framer Accordion Animations */
+details summary::-webkit-details-marker {
+  display: none;
 }
+
+/* Pulse animation for CTA badges */
+@keyframes softPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+.animate-soft-pulse {
+  animation: softPulse 3s infinite ease-in-out;
+}
+

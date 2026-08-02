@@ -1,143 +1,125 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Scan, Server, Camera, Layers, X, ArrowRight } from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
+import { Target, Database, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 
 interface SolutionsSectionProps {
   onOpenBooking: () => void;
 }
 
 export default function SolutionsSection({ onOpenBooking }: SolutionsSectionProps) {
-  const [activeSpecModal, setActiveSpecModal] = useState<any | null>(null);
-
-  const solutions = [
+  const primaryServices = [
     {
-      id: "smart-ports",
-      title: "Smart Port Container OCR",
-      subtitle: "Automated Gate Integration",
-      icon: Scan,
-      image: "/images/port_hero.png",
-      description: "Industrial-grade optical container OCR gantries, high-speed License Plate Recognition (LPR), automated barrier gates, and seamless Terminal Operating System (TOS) integration."
+      id: "client-acquisition",
+      title: "BPO Client Acquisition",
+      badge: "Core Service",
+      icon: Target,
+      tagline: "We identify, research, approach, and close end-clients for offshore BPO companies.",
+      features: [
+        "Multi-channel outreach via LinkedIn & Email",
+        "Targeted lead identification & research",
+        "Decision-maker level engagement & closing"
+      ]
     },
     {
-      id: "it-infrastructure",
-      title: "Enterprise IT & Fiber",
-      subtitle: "High-Density Data Centers",
-      icon: Layers,
-      image: "/images/data_center.png",
-      description: "Turnkey enterprise networking solutions including single-mode fiber optic rings, Cat6A structured cabling, Cisco core routing, and Tier-III cooling."
+      id: "crm-management",
+      title: "CRM Integration & Operations",
+      badge: "Powered by All States Careers",
+      icon: Database,
+      tagline: "Structured onboarding, communication management, escalation handling, and weekly reporting.",
+      features: [
+        "Structured client onboarding from Day 1",
+        "Dedicated CRM environment setup",
+        "Weekly performance & progress reports"
+      ]
     },
     {
-      id: "cctv-security",
-      title: "CCTV & Video Analytics",
-      subtitle: "AI SOC Operations",
-      icon: Camera,
-      image: "/images/cctv_soc.png",
-      description: "High-definition thermal and optical security cameras, AI video analytics for perimeter intrusion detection, and central SOC video walls."
+      id: "guaranteed-growth",
+      title: "Performance Guaranteed",
+      badge: "Zero Risk",
+      icon: ShieldCheck,
+      tagline: "At least 3 qualified, decision-maker conversations within 45 days or we work free.",
+      features: [
+        "Verified decision-maker meetings only",
+        "45-Day performance deadline",
+        "No additional cost until target met"
+      ]
     }
   ];
 
   return (
-    <section id="solutions" className="py-24 bg-white relative">
+    <section id="services" className="py-24 bg-[#F3F3F6] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="max-w-2xl space-y-4">
-            <span className="text-xs font-bold tracking-widest text-[#075CE0] uppercase bg-[#075CE0]/10 px-3 py-1.5 rounded-full">
-              SOLUTIONS
-            </span>
-            <h2 className="heading-section">
-              Unlock your full potential with our <br/>
-              <span className="hand-underline">cutting-edge systems.</span>
-            </h2>
-          </div>
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="px-3.5 py-1 rounded-full bg-lime-400/20 text-slate-900 text-xs font-bold uppercase tracking-wider border border-lime-500/30 inline-block">
+            Our Services
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-heading leading-tight">
+            The Dual-Engine <span className="purple-underline text-purple-600">Strategy</span>
+          </h2>
+          <p className="text-base sm:text-lg text-slate-600 font-sans leading-relaxed">
+            Say goodbye to client acquisition hassles. Two integrated engines take your BPO firm from searching for clients to managing thriving partnerships.
+          </p>
         </div>
 
-        {/* Solutions Grid - Bento Box Style Light Theme */}
+        {/* Framer Top 3 Lime Green Bento Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {solutions.map((sol) => {
-            const IconComponent = sol.icon;
+          {primaryServices.map((service, idx) => {
+            const IconComp = service.icon;
             return (
-              <div
-                key={sol.id}
-                className="group relative rounded-3xl bg-[#F2F4F7] overflow-hidden flex flex-col transition-shadow hover:shadow-xl hover:shadow-[#082A78]/5"
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="lime-card p-8 flex flex-col justify-between relative overflow-hidden group shadow-lg"
               >
-                {/* Content */}
-                <div className="p-8 space-y-4 flex-1">
-                  <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-[#0A0C0D] mb-6 shadow-sm">
-                    <IconComponent className="w-6 h-6" />
+                <div>
+                  {/* Circular Icon Header */}
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 text-[#B4F600] flex items-center justify-center mb-6 shadow-md">
+                    <IconComp className="w-7 h-7" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#0A0C0D] tracking-tight">
-                    {sol.title}
+
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-800 opacity-80 block mb-2">
+                    {service.badge}
+                  </span>
+
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight font-heading">
+                    {service.title}
                   </h3>
-                  <p className="text-[15px] text-[#5F6C7C] leading-relaxed">
-                    {sol.description}
+
+                  <p className="text-sm font-medium text-slate-800 leading-relaxed mb-6">
+                    {service.tagline}
                   </p>
+
+                  <ul className="space-y-2.5 pt-4 border-t border-slate-900/10">
+                    {service.features.map((feat, i) => (
+                      <li key={i} className="flex items-start gap-2.5 text-xs font-semibold text-slate-900">
+                        <CheckCircle2 className="w-4 h-4 text-slate-900 shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Bottom Image Banner */}
-                <div className="mx-4 mb-4 relative h-56 rounded-2xl overflow-hidden bg-white shadow-inner">
-                  <img
-                    src={sol.image}
-                    alt={sol.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <button 
-                    onClick={() => setActiveSpecModal(sol)}
-                    className="absolute bottom-4 right-4 z-20 px-4 py-2 rounded-full bg-white text-[#0A0C0D] font-semibold text-xs flex items-center gap-1 shadow-lg hover:scale-105 transition-transform cursor-pointer"
+                <div className="pt-8">
+                  <button
+                    onClick={onOpenBooking}
+                    className="w-full py-3 px-4 rounded-xl bg-slate-900 text-white font-bold text-xs uppercase tracking-wider hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
                   >
-                    <span>Details</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>Get Started</span>
+                    <ArrowRight className="w-4 h-4 text-[#B4F600]" />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
-
-      {/* Very Minimal Spec Modal */}
-      <AnimatePresence>
-        {activeSpecModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#0A0C0D]/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-[2rem] p-8 max-w-lg w-full relative shadow-2xl"
-            >
-              <button
-                onClick={() => setActiveSpecModal(null)}
-                className="absolute top-6 right-6 text-[#5F6C7C] hover:text-[#0A0C0D] transition-colors bg-[#F2F4F7] p-2 rounded-full"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              
-              <div className="w-12 h-12 rounded-xl bg-[#F2F4F7] flex items-center justify-center text-[#075CE0] mb-6">
-                {React.createElement(activeSpecModal.icon, { className: "w-6 h-6" })}
-              </div>
-              <h3 className="text-3xl font-bold text-[#0A0C0D] mb-3 tracking-tight">
-                {activeSpecModal.title}
-              </h3>
-              <p className="text-[#5F6C7C] text-base mb-8 leading-relaxed">
-                {activeSpecModal.description}
-              </p>
-              
-              <button
-                onClick={() => {
-                  setActiveSpecModal(null);
-                  onOpenBooking();
-                }}
-                className="w-full py-4 rounded-xl bg-[#075CE0] text-white font-semibold transition-transform hover:scale-[1.02] shadow-lg shadow-[#075CE0]/20"
-              >
-                Request Technical Specs
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
+

@@ -2,77 +2,157 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Layers, Cpu, Zap, ShieldCheck } from "lucide-react";
+import { DollarSign, GraduationCap, Clock, MessageSquare, Database, Shield } from "lucide-react";
 
 export default function WhyPrime() {
-  const differentiators = [
-    {
-      icon: Layers,
-      title: "Turnkey EPC Execution",
-      desc: "Single point of contact managing everything from civil mounting gantries to optical OCR cameras and TOS software middleware."
-    },
-    {
-      icon: Cpu,
-      title: "Industrial-Grade Hardening",
-      desc: "All hardware components are IP66/IP67 rated, marine-grade anti-corrosive coated, and rated for extreme environments."
-    },
-    {
-      icon: Zap,
-      title: "Native TOS & ERP Integration",
-      desc: "Pre-built middleware connectors for Navis N4, COSMOS, CyberLogitec, SAP, and Oracle ERP systems with zero latency."
-    },
-    {
-      icon: ShieldCheck,
-      title: "Zero-Downtime Architecture",
-      desc: "N+2 redundant power supplies, failover fiber loops, and hot-swappable optical sensor arrays for 99.99% continuity."
-    }
-  ];
-
   return (
-    <section id="features" className="py-24 bg-[#F2F4F7] relative">
+    <section id="why-egypt" className="py-24 bg-[#F3F3F6] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
-          <span className="text-xs font-bold tracking-widest text-[#075CE0] uppercase bg-[#075CE0]/10 px-3 py-1.5 rounded-full">
-            Enterprise Architecture
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="px-3.5 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold uppercase tracking-wider border border-purple-200 inline-block">
+            The Advantage
           </span>
-          <h2 className="heading-section">
-            Good-bye to traditional <br/>
-            <span className="hand-underline">infrastructure hassle.</span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-heading leading-tight">
+            Why Egypt? Why <span className="purple-underline text-purple-600">Prime Connect</span>?
           </h2>
-          <p className="text-lg text-[#5F6C7C] max-w-2xl mx-auto">
-            Say farewell to the complexities of the past and unlock a smoother path to successful port and facility integration. Welcome to a new era of engineering simplicity.
+          <p className="text-base sm:text-lg text-slate-600 font-sans leading-relaxed">
+            Our base in Egypt gives your company a decisive edge: an educated, English-fluent talent pool, cost structures that outperform Western alternatives, and a geographic position bridging global time zones.
           </p>
         </div>
 
-        {/* Core Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {differentiators.map((diff, idx) => {
-            const IconComp = diff.icon;
-            return (
-              <div
-                key={idx}
-                className="bg-white border border-[#0A0C0D]/5 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 flex flex-col items-start gap-6 group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-[#F2F4F7] flex items-center justify-center text-[#0A0C0D] group-hover:bg-[#075CE0] group-hover:text-white transition-colors">
-                  <IconComp className="w-6 h-6" />
-                </div>
+        {/* Bento Grid Layout (Framer Template Style) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {/* Card 1: Cost Savings */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="framer-card p-8 md:col-span-2 flex flex-col justify-between"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6">
+              <DollarSign className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-4xl sm:text-5xl font-black text-slate-900 font-heading tracking-tight">
+                30–40%
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mt-2 mb-1">
+                Direct Cost Savings
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Outperform US/UK equivalent sales and client acquisition expenses while maintaining top-tier operational quality.
+              </p>
+            </div>
+          </motion.div>
 
-                <div className="space-y-3">
-                  <h3 className="text-xl font-bold text-[#0A0C0D] tracking-tight">
-                    {diff.title}
-                  </h3>
-                  <p className="text-[14px] text-[#5F6C7C] leading-relaxed">
-                    {diff.desc}
-                  </p>
+          {/* Card 2: English Talent Pool */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="framer-card p-8 flex flex-col justify-between"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-lime-100 text-slate-900 flex items-center justify-center mb-6">
+              <GraduationCap className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">
+                English-Fluent Talent
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                University-educated workforce with high proficiency in technical, sales, and customer operations.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Card 3: UTC+3 Time Zone */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="framer-card p-8 flex flex-col justify-between"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6">
+              <Clock className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-2xl font-black text-slate-900 font-heading">
+                UTC+3 Time Zone
+              </span>
+              <h3 className="text-base font-bold text-slate-900 mt-1 mb-1">
+                Strategic Bridge
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Operate within single-day overlapping hours for both GCC and US East Coast business operations.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Card 4: CRM Dashboard & Infrastructure Mockup (Large Spanning Card) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="framer-card p-8 md:col-span-2 lg:col-span-3 flex flex-col justify-between bg-slate-900 text-white relative overflow-hidden"
+          >
+            <div className="flex items-center justify-between mb-6 z-10">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white font-bold">
+                  <Database className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">CRM Infrastructure Active</h3>
+                  <p className="text-xs text-purple-300">Powered by All States Careers</p>
                 </div>
               </div>
-            );
-          })}
-        </div>
+              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold">
+                Live Onboarding
+              </span>
+            </div>
 
+            {/* Mock Code & Metrics Widget */}
+            <div className="bg-slate-950 rounded-2xl p-4 font-mono text-xs text-slate-300 border border-slate-800 space-y-2 mb-6 z-10">
+              <div className="flex items-center justify-between text-slate-500 pb-2 border-b border-slate-800">
+                <span>// Pipeline Status: Active</span>
+                <span className="text-purple-400">All States Integration</span>
+              </div>
+              <p className="text-emerald-400">✓ Prospect Qualification Engine: Active</p>
+              <p className="text-purple-300">➜ Client Onboarding: Transferring to Dedicated CRM</p>
+              <p className="text-slate-400">➜ Weekly Analytics & Escalation Handling: Enabled</p>
+            </div>
+
+            <p className="text-xs text-slate-400 z-10">
+              Every signed client enters a structured CRM from Day 1 with dedicated weekly reporting and issue resolution protocols.
+            </p>
+          </motion.div>
+
+          {/* Card 5: Neutral Accent */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="framer-card p-8 flex flex-col justify-between"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6">
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                Neutral Accent
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Clear, professional communication tailored for Western and GCC executive decision-makers.
+              </p>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
 }
+

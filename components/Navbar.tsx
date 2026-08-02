@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, PhoneCall } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NavbarProps {
@@ -14,17 +14,19 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      setScrolled(window.scrollY > 15);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
-    { label: "Benefits", href: "#features" },
-    { label: "Product", href: "#solutions" },
-    { label: "Testimonials", href: "#testimonials" },
-    { label: "FAQs", href: "#metrics" },
+    { label: "Services", href: "#services" },
+    { label: "Why Egypt", href: "#why-egypt" },
+    { label: "Process", href: "#process" },
+    { label: "Guarantee", href: "#guarantee" },
+    { label: "Leadership", href: "#leadership" },
+    { label: "FAQs", href: "#faqs" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -38,11 +40,13 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-[var(--color-white)]/95 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.05)]" : "bg-transparent"
+        scrolled
+          ? "bg-[#F3F3F6]/90 backdrop-blur-md border-b border-slate-200/80 py-3 shadow-xs"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[96px]">
+        <div className="flex items-center justify-between">
           {/* Logo Branding */}
           <a
             href="#"
@@ -50,23 +54,28 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="flex items-center gap-3 group cursor-pointer"
+            className="flex items-center gap-2.5 group cursor-pointer"
           >
-            <div className="w-[36px] h-[36px] rounded-[10px] border-2 border-[var(--color-cobalt)] flex items-center justify-center transition-transform group-hover:scale-105">
-              <div className="w-[18px] h-[18px] border-[3px] border-[var(--color-cobalt)] rounded-sm rotate-12" />
+            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-purple-500/20 group-hover:scale-105 transition-transform">
+              P
             </div>
-            <span className="text-[20px] font-semibold tracking-tight text-[var(--color-graphite)] font-heading">
-              PrimeConnect
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold tracking-tight text-slate-900 font-heading leading-tight">
+                Prime<span className="text-purple-600">Connect</span>
+              </span>
+              <span className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">
+                Egypt BPO Growth
+              </span>
+            </div>
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-[32px]">
+          <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-[16px] font-medium font-sans text-[var(--color-graphite)] hover:text-[var(--color-cobalt)] transition-colors cursor-pointer"
+                className="text-sm font-medium text-slate-700 hover:text-purple-600 transition-colors cursor-pointer"
               >
                 {link.label}
               </button>
@@ -77,16 +86,17 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           <div className="hidden md:flex items-center">
             <button
               onClick={onOpenBooking}
-              className="px-[20px] py-[12px] rounded-[8px] border border-[var(--color-cobalt)]/30 text-[var(--color-cobalt)] font-medium font-sans text-[16px] transition-all hover:border-[var(--color-cobalt)] hover:bg-[var(--color-cobalt)]/5 cursor-pointer shadow-sm"
+              className="px-5 py-2.5 rounded-full bg-purple-600 text-white font-medium text-sm hover:bg-purple-700 transition-all shadow-md shadow-purple-600/25 hover:shadow-lg hover:shadow-purple-600/35 cursor-pointer flex items-center gap-2"
             >
-              Get Template
+              <PhoneCall className="w-4 h-4" />
+              <span>Book a Discovery Call</span>
             </button>
           </div>
 
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-[var(--color-graphite)] p-2 transition-colors"
+            className="md:hidden text-slate-800 p-2 transition-colors"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -101,27 +111,27 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[var(--color-white)] border-b border-[var(--color-graphite)]/10 overflow-hidden"
+            className="md:hidden bg-white border-b border-slate-200 overflow-hidden shadow-xl"
           >
-            <div className="px-4 pt-2 pb-6 space-y-1">
+            <div className="px-4 pt-3 pb-6 space-y-2">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="block w-full text-left px-4 py-3 text-[16px] font-medium font-sans text-[var(--color-graphite)] hover:bg-[var(--color-off-white)] rounded-[8px] transition-colors"
+                  className="block w-full text-left px-4 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
                 >
                   {link.label}
                 </button>
               ))}
-              <div className="pt-4 px-4">
+              <div className="pt-4 px-2">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onOpenBooking();
                   }}
-                  className="w-full py-[12px] border border-[var(--color-cobalt)]/30 text-[var(--color-cobalt)] font-medium font-sans rounded-[8px] text-center"
+                  className="w-full py-3 rounded-full bg-purple-600 text-white font-medium text-center shadow-md shadow-purple-600/25"
                 >
-                  Get Template
+                  Book a Discovery Call
                 </button>
               </div>
             </div>
@@ -131,3 +141,4 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     </header>
   );
 }
+

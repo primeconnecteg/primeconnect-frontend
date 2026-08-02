@@ -3,11 +3,14 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import WhyPrime from "@/components/WhyPrime";
 import SolutionsSection from "@/components/SolutionsSection";
-import AboutPrime from "@/components/AboutPrime";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import ContactSection from "@/components/ContactSection";
+import WhyPrime from "@/components/WhyPrime";
+import BusinessProcess from "@/components/BusinessProcess";
+import PerformanceGuarantee from "@/components/PerformanceGuarantee";
+import LaunchPartnerProgram from "@/components/LaunchPartnerProgram";
+import MeetLeadership from "@/components/MeetLeadership";
+import FaqSection from "@/components/FaqSection";
+import BottomCta from "@/components/BottomCta";
 import Footer from "@/components/Footer";
 import BookingModal from "@/components/BookingModal";
 
@@ -23,33 +26,43 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white font-sans overflow-x-hidden selection:bg-white selection:text-black">
-      {/* Navigation */}
+    <main className="min-h-screen bg-[#F3F3F6] text-slate-900 font-sans overflow-x-hidden selection:bg-purple-600 selection:text-white">
+      {/* Top Sticky Navigation */}
       <Navbar onOpenBooking={handleOpenBooking} />
 
-      {/* Hero */}
+      {/* Hero Section */}
       <Hero onOpenBooking={handleOpenBooking} />
 
-      {/* Intro text / Features */}
-      <WhyPrime />
-
-      {/* Core Solutions Bento Grid */}
+      {/* Primary Dual-Engine Services */}
       <SolutionsSection onOpenBooking={handleOpenBooking} />
 
-      {/* Big Metrics */}
-      <AboutPrime />
+      {/* Why Egypt / Why Prime Connect Bento Grid */}
+      <WhyPrime />
 
-      {/* Testimonials */}
-      <TestimonialsSection />
+      {/* 6-Step Pipeline Process */}
+      <BusinessProcess />
 
-      {/* Large CTA Form */}
-      <ContactSection />
+      {/* Performance Guarantee & Metrics */}
+      <PerformanceGuarantee onOpenBooking={handleOpenBooking} />
+
+      {/* Launch Partner Program Perks */}
+      <LaunchPartnerProgram onOpenBooking={handleOpenBooking} />
+
+      {/* Meet Leadership & Yousef Mattar Booking */}
+      <MeetLeadership onOpenBooking={handleOpenBooking} />
+
+      {/* Interactive FAQ Accordion */}
+      <FaqSection />
+
+      {/* Split Bottom Lime Green Banner */}
+      <BottomCta onOpenBooking={handleOpenBooking} />
 
       {/* Footer */}
       <Footer />
 
-      {/* Booking Modal */}
+      {/* Interactive Booking Modal */}
       <BookingModal isOpen={bookingModalOpen} onClose={handleCloseBooking} />
     </main>
   );
 }
+
