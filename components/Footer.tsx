@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Download } from "lucide-react";
 
 export default function Footer() {
   const footerLinks = [
@@ -24,18 +25,15 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo Branding */}
-          <div className="flex items-center gap-3 cursor-pointer">
-            <div className="w-10 h-10 rounded-xl bg-[#082A78] flex items-center justify-center text-white font-black text-xl shadow-md">
-              P
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-[#0A0C0D] font-heading">
-                Prime<span className="text-[#075CE0]">Connect</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold text-[#5F6C7C]">
-                Egypt BPO Growth Engine
-              </span>
-            </div>
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <img
+              src="/Prime_Connect_Horizontal_Lockup_Transparent_3200.png"
+              alt="Prime Connect EG Logo"
+              className="h-10 w-auto object-contain"
+            />
+            <span className="text-[11px] uppercase font-bold text-[#5F6C7C] tracking-wider">
+              Egypt BPO Growth Engine
+            </span>
           </div>
 
           {/* Nav Links */}
@@ -49,6 +47,15 @@ export default function Footer() {
                 {link.label}
               </button>
             ))}
+            <a
+              href="/Prime_Connect_EG_Company_Profile.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-[#075CE0] hover:underline inline-flex items-center gap-1"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Company Profile PDF</span>
+            </a>
           </div>
 
           {/* Email Contacts */}
@@ -79,5 +86,6 @@ export default function Footer() {
     </footer>
   );
 }
+
 
 

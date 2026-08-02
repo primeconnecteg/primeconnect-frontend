@@ -49,17 +49,20 @@ export default function BottomCta({ onOpenBooking }: BottomCtaProps) {
               alt="Prime Connect Global Operations"
               className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity"
             />
-            <div className="relative z-20 text-center space-y-3 p-6 bg-[#04143F]/80 backdrop-blur-md rounded-2xl border border-[#075CE0]/30 max-w-sm">
-              <span className="text-2xl font-black text-[#08BEEA] font-heading">
-                Prime Connect EG
-              </span>
+            <div className="relative z-20 text-center space-y-3 p-6 bg-[#04143F]/85 backdrop-blur-md rounded-2xl border border-[#075CE0]/40 max-w-sm flex flex-col items-center">
+              <img
+                src="/Prime_Connect_Horizontal_Lockup_White_Transparent_3200.png"
+                alt="Prime Connect EG Logo"
+                className="h-10 w-auto object-contain mb-1"
+              />
               <p className="text-xs text-slate-300">
                 Cairo, Egypt · Connecting Elite Talent with Global Markets
               </p>
-              <p className="text-[10px] uppercase tracking-widest text-[#08BEEA] font-mono">
+              <p className="text-[10px] uppercase tracking-widest text-[#08BEEA] font-mono font-bold">
                 5 Launch Partner Slots Remaining
               </p>
             </div>
+
           </div>
         </motion.div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, PhoneCall } from "lucide-react";
+import { Menu, X, PhoneCall, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NavbarProps {
@@ -47,30 +47,24 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo Branding */}
+          {/* Logo Branding using Official Transparent Lockup Image */}
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="flex items-center gap-2.5 group cursor-pointer"
+            className="flex items-center group cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#082A78] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#082A78]/20 group-hover:scale-105 transition-transform">
-              P
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-[#0A0C0D] font-heading leading-tight">
-                Prime<span className="text-[#075CE0]">Connect</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold text-[#5F6C7C] tracking-wider">
-                Egypt BPO Growth
-              </span>
-            </div>
+            <img
+              src="/Prime_Connect_Horizontal_Lockup_Transparent_3200.png"
+              alt="Prime Connect EG Logo"
+              className="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105"
+            />
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <button
                 key={link.href}
@@ -82,11 +76,21 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             ))}
           </nav>
 
-          {/* Desktop CTA Action */}
-          <div className="hidden md:flex items-center">
+          {/* Desktop Actions (Company Profile PDF + Book Call) */}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="/Prime_Connect_EG_Company_Profile.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 rounded-full border border-[#082A78]/20 bg-white text-[#082A78] font-bold text-xs hover:bg-[#F2F4F7] transition-all flex items-center gap-1.5 shadow-xs"
+            >
+              <Download className="w-3.5 h-3.5 text-[#075CE0]" />
+              <span>Company Profile PDF</span>
+            </a>
+
             <button
               onClick={onOpenBooking}
-              className="px-5 py-2.5 rounded-full bg-[#075CE0] text-white font-semibold text-sm hover:bg-[#082A78] transition-all shadow-md shadow-[#075CE0]/25 hover:shadow-lg cursor-pointer flex items-center gap-2"
+              className="px-5 py-2.5 rounded-full bg-[#075CE0] text-white font-semibold text-sm hover:bg-[#082A78] transition-all shadow-md shadow-[#075CE0]/25 cursor-pointer flex items-center gap-2"
             >
               <PhoneCall className="w-4 h-4 text-[#08BEEA]" />
               <span>Book a Discovery Call</span>
@@ -123,7 +127,16 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                   {link.label}
                 </button>
               ))}
-              <div className="pt-4 px-2">
+              <div className="pt-4 px-2 space-y-2">
+                <a
+                  href="/Prime_Connect_EG_Company_Profile.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 rounded-full border border-[#082A78]/20 text-[#082A78] font-bold text-center flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4 text-[#075CE0]" />
+                  <span>Download Company Profile</span>
+                </a>
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
@@ -141,5 +154,6 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     </header>
   );
 }
+
 
 
