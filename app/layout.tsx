@@ -1,44 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const vietnam = Be_Vietnam_Pro({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-vietnam",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://primeconnecteg.com"),
-  alternates: {
-    canonical: "/",
-  },
-  title: "Prime Connect EG | Egypt's Premier BPO Growth Engine",
-  description:
-    "Prime Connect EG connects elite Egyptian professionals with global businesses through customer support, technical helpdesk, CRM integration and BPO outsourcing.",
-  keywords: [
-    "BPO Egypt",
-    "Outsourcing Egypt",
-    "Client Acquisition Engine",
-    "Offshore Call Center",
-    "Egyptian BPO Talent",
-    "GCC Time Zone BPO",
-  ],
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/icon.png",
-  },
-  openGraph: {
-    title: "Prime Connect EG | Egypt's Premier BPO Growth Engine",
-    description:
-      "Connecting elite Egyptian talent with global outsourcing partners to drive seamless growth and CRM-integrated success.",
-    siteName: "Prime Connect EG",
-    locale: "en_US",
-    type: "website",
-  },
+  title: "Prime Connect EG | Enterprise Smart Port & System Integration Solutions",
+  description: "Prime Connect EG is an enterprise technology & system integration company in Egypt.",
 };
 
 export default function RootLayout({
@@ -47,13 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`}>
+    <html lang="en" className={`${poppins.variable} ${vietnam.variable} scroll-smooth`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/icon.png" />
       </head>
-      <body className="min-h-screen bg-white text-navy-dark antialiased font-sans flex flex-col">
+      <body className="min-h-screen bg-[#F2F4F7] antialiased font-sans flex flex-col selection:bg-[#075CE0] selection:text-white">
         {children}
       </body>
     </html>

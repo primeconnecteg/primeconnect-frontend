@@ -1,174 +1,194 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowRight, Star } from "lucide-react";
 
 interface HeroProps {
   onOpenBooking: () => void;
 }
 
 export default function Hero({ onOpenBooking }: HeroProps) {
-  const dynamicPhrases = [
-    { text: "We find the clients.", delay: 0.3 },
-    { text: "We close the deal.", delay: 0.7 },
-    { text: "We run the relationship.", delay: 1.1 },
-  ];
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleScrollToYousef = () => {
-    const el = document.querySelector("#yousef");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      onOpenBooking();
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1000);
   };
-
-  const handleLearnMore = () => {
-    const el = document.querySelector("#what-we-do");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const servingRegions = ["USA", "UK", "Canada", "Australia", "GCC"];
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-[#0a192f] text-white pt-44 md:pt-52 lg:pt-56 pb-20 md:pb-28">
-      {/* Background Network Graphic Image */}
-      <div className="absolute inset-0 bg-[#0a192f]">
-        <img
-          src="https://media.base44.com/images/public/6a3c9e0bbe44e670a2fbd924/c60ca56b5_generated_d880987d.png"
-          alt="Global network visualization"
-          className="w-full h-full object-cover opacity-30 mix-blend-lighten"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a192f]/60 via-[#0a192f]/40 to-[#0a192f]" />
+    <section className="relative pt-32 pb-20 md:pt-[180px] md:pb-24 overflow-hidden bg-[var(--color-off-white)]">
+      
+      {/* Hand-drawn decorative background scribble behind the card */}
+      <div className="absolute top-[10%] right-[5%] opacity-[0.4] hidden lg:block pointer-events-none z-0">
+        <svg width="400" height="400" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 20L100 80M100 180L100 120M20 100L80 100M180 100L120 100M43 43L85 85M157 157L115 115M157 43L115 85M43 157L85 115M30 60L70 80M170 140L130 120M60 170L80 130" stroke="var(--color-graphite)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </div>
 
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
-        <motion.line
-          x1="0%"
-          y1="100%"
-          x2="100%"
-          y2="30%"
-          stroke="#F4821F"
-          strokeWidth="1"
-          strokeOpacity="0.15"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 3, ease: "easeOut" }}
-        />
-        <motion.line
-          x1="20%"
-          y1="100%"
-          x2="80%"
-          y2="0%"
-          stroke="#F4821F"
-          strokeWidth="1"
-          strokeOpacity="0.1"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 3.5, ease: "easeOut", delay: 0.5 }}
-        />
-      </svg>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
+          
+          {/* Left Column: Text & Content */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-[24px]">
+            
+            {/* Status Pill Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-[6px] py-[6px] rounded-full mb-[8px]"
+              style={{ backgroundColor: 'rgba(8, 190, 234, 0.15)' }} /* Light cyan tint */
+            >
+              <span className="px-[12px] py-[4px] rounded-full bg-[var(--color-cyan)] text-[12px] font-semibold text-[var(--color-deep-navy)] font-sans tracking-[0.01em]">
+                Updates
+              </span>
+              <span className="text-[14px] font-medium text-[var(--color-graphite)] font-sans pr-[12px] flex items-center gap-1">
+                We secured 3M Series B round <ArrowRight className="w-[14px] h-[14px] text-[var(--color-steel)]" />
+              </span>
+            </motion.div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl">
-          {/* Eyebrow */}
-          <motion.p
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-[#F4821F] font-semibold tracking-[0.2em] uppercase text-sm md:text-base mb-6"
-          >
-            Egypt&apos;s Premier BPO Growth Engine
-          </motion.p>
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="heading-display"
+            >
+              Ease your <span className="hand-drawn-underline text-[var(--color-graphite)]">mind</span> <br/>
+              on business <br/>
+              operations.
+            </motion.h1>
 
-          {/* Main Title */}
-          <motion.h1
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight mb-8"
-          >
-            PRIME
-            <br />
-            <span className="text-[#F4821F]">CONNECT</span>
-            <span className="text-white/40 font-light ml-3">EG</span>
-          </motion.h1>
+            {/* Supporting Paragraph */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-paragraph max-w-[480px]"
+            >
+              From intuitive task management to advanced data analytics, our software equips you with the tools you need to thrive in today's competitive business landscape.
+            </motion.p>
 
-          {/* 3 Text Paragraphs */}
-          <div className="flex flex-col gap-1 mb-12">
-            {dynamicPhrases.map((e) => (
-              <motion.p
-                key={e.text}
-                initial={{ opacity: 0, x: 80 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: e.delay, type: "spring", damping: 20 }}
-                className="text-lg sm:text-xl md:text-2xl text-white/90 font-light tracking-wide"
-              >
-                {e.text}
-              </motion.p>
-            ))}
+            {/* Avatar Stars (Social Proof) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex items-center gap-4 mt-2"
+            >
+              <div className="flex -space-x-[12px]">
+                <div className="w-[36px] h-[36px] rounded-full bg-[var(--color-prime-blue)] border-2 border-[var(--color-off-white)] flex items-center justify-center text-white text-[10px] font-bold shadow-sm z-30">
+                  <img src="https://i.pravatar.cc/100?img=1" alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                </div>
+                <div className="w-[36px] h-[36px] rounded-full bg-[var(--color-deep-navy)] border-2 border-[var(--color-off-white)] flex items-center justify-center text-white text-[10px] font-bold shadow-sm z-20">
+                  <img src="https://i.pravatar.cc/100?img=2" alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                </div>
+                <div className="w-[36px] h-[36px] rounded-full bg-[var(--color-cobalt)] border-2 border-[var(--color-off-white)] flex items-center justify-center text-white text-[10px] font-bold shadow-sm z-10">
+                  <img src="https://i.pravatar.cc/100?img=3" alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                </div>
+                <div className="w-[36px] h-[36px] rounded-full bg-[var(--color-cyan)] border-2 border-[var(--color-off-white)] flex items-center justify-center text-white text-[10px] font-bold shadow-sm z-0">
+                  <img src="https://i.pravatar.cc/100?img=4" alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                </div>
+              </div>
+              <div className="flex items-center gap-[4px]">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} className="w-[18px] h-[18px] fill-[#F5A623] text-[#F5A623]" />
+                ))}
+              </div>
+            </motion.div>
+
           </div>
 
-          {/* 2 CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.6 }}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <button
-              onClick={handleScrollToYousef}
-              className="px-8 py-4 bg-[#F4821F] text-[#0a192f] font-bold text-lg rounded-full hover:bg-[#F69947] transition-all duration-300 hover:scale-105 sonar-pulse shadow-lg shadow-[#F4821F]/30 cursor-pointer"
+          {/* Right Column: CTA Form Card */}
+          <div className="lg:col-span-5 relative z-30 flex justify-center lg:justify-end w-full">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="w-full max-w-[420px] bg-[var(--color-white)] rounded-[24px] framer-card-shadow px-[32px] py-[40px]"
             >
-              Book a Free Discovery Call with Yousef Mattar
-            </button>
-            <button
-              onClick={handleLearnMore}
-              className="px-8 py-4 bg-white/10 text-white font-semibold text-lg rounded-full hover:bg-white/20 transition-all duration-300 cursor-pointer"
-            >
-              Learn More
-            </button>
-          </motion.div>
+              <div className="text-center mb-[24px]">
+                <h3 className="text-[24px] font-medium font-heading text-[var(--color-graphite)] mb-[12px] tracking-tight">
+                  Secure your spot now
+                </h3>
+                <p className="text-[14px] text-[var(--color-steel)] font-sans leading-[1.5]">
+                  Be the first to know when the product launches and other not-to-miss updates.
+                </p>
+              </div>
 
-          {/* Serving Region Badges */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.2, duration: 1 }}
-            className="mt-16 flex items-center gap-6 text-white/40 text-sm flex-wrap"
-          >
-            <span>Serving</span>
-            <div className="flex gap-3 text-white/60 font-medium flex-wrap">
-              {servingRegions.map((region) => (
-                <span
-                  key={region}
-                  className="px-3.5 py-1 border border-white/10 rounded-full text-xs font-semibold hover:border-[#F4821F]/40 hover:text-white transition-colors"
-                >
-                  {region}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+              {submitted ? (
+                <div className="text-center py-6">
+                  <p className="text-[var(--color-graphite)] font-bold text-[18px]">Waitlist joined!</p>
+                  <p className="text-[14px] text-[var(--color-steel)] mt-2">We'll be in touch soon.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-[16px]">
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-[16px] py-[14px] rounded-[8px] bg-[var(--color-off-white)] border border-transparent text-[var(--color-graphite)] text-[15px] font-sans placeholder:text-[var(--color-steel)] focus:outline-none focus:bg-[var(--color-white)] focus:border-[var(--color-cobalt)] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Your email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-[16px] py-[14px] rounded-[8px] bg-[var(--color-off-white)] border border-transparent text-[var(--color-graphite)] text-[15px] font-sans placeholder:text-[var(--color-steel)] focus:outline-none focus:bg-[var(--color-white)] focus:border-[var(--color-cobalt)] transition-colors"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-[15px] rounded-[8px] bg-[var(--color-cobalt)] text-[var(--color-white)] font-semibold text-[16px] font-sans transition-colors hover:bg-[var(--color-prime-blue)] disabled:opacity-50 mt-[8px]"
+                  >
+                    {loading ? "Joining..." : "Join the Waitlist"}
+                  </button>
+                  <p className="text-[12px] text-[var(--color-steel)] text-center pt-[8px] font-sans">
+                    By subscribing, you agree with our <a href="#" className="underline hover:text-[var(--color-graphite)]">Terms of License</a>
+                  </p>
+                </form>
+              )}
+            </motion.div>
+          </div>
+
         </div>
-      </div>
 
-      {/* Animated Scroll Bouncing Icon */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-1.5"
+        {/* Client Logos Strip (Join other tech leaders) */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-[120px]"
         >
-          <div className="w-1.5 h-1.5 bg-[#F4821F] rounded-full" />
+          <p className="text-center text-[16px] font-medium font-sans text-[var(--color-steel)] mb-[40px]">
+            Join other tech leaders:
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-[60px] opacity-[0.4] grayscale">
+            <span className="text-[24px] font-bold font-serif text-[var(--color-graphite)]">amazon</span>
+            <span className="text-[24px] font-bold font-sans tracking-tighter text-[var(--color-graphite)]">todoist</span>
+            <span className="text-[24px] font-bold italic text-[var(--color-graphite)]">Framer</span>
+            <span className="text-[24px] font-bold text-[var(--color-graphite)]">splice</span>
+            <span className="text-[24px] font-bold font-sans text-[var(--color-graphite)]">OpenAI</span>
+            <span className="text-[22px] font-medium tracking-[0.3em] uppercase text-[var(--color-graphite)]">TESLA</span>
+          </div>
         </motion.div>
-      </motion.div>
+
+      </div>
     </section>
   );
 }

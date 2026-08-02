@@ -3,12 +3,10 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import DualEngine from "@/components/DualEngine";
-import WhyEgypt from "@/components/WhyEgypt";
-import Pipeline from "@/components/Pipeline";
-import Guarantee from "@/components/Guarantee";
-import LaunchPartner from "@/components/LaunchPartner";
-import Team from "@/components/Team";
+import WhyPrime from "@/components/WhyPrime";
+import SolutionsSection from "@/components/SolutionsSection";
+import AboutPrime from "@/components/AboutPrime";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import BookingModal from "@/components/BookingModal";
@@ -25,38 +23,32 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-white selection:bg-orange-500 selection:text-slate-950 font-sans">
-      {/* 1. Navigation Header */}
+    <main className="min-h-screen bg-black text-white font-sans overflow-x-hidden selection:bg-white selection:text-black">
+      {/* Navigation */}
       <Navbar onOpenBooking={handleOpenBooking} />
 
-      {/* 2. Hero Section */}
+      {/* Hero */}
       <Hero onOpenBooking={handleOpenBooking} />
 
-      {/* 3. Our Services: Dual-Engine Strategy */}
-      <DualEngine />
+      {/* Intro text / Features */}
+      <WhyPrime />
 
-      {/* 4. The Advantage: Why Egypt? */}
-      <WhyEgypt />
+      {/* Core Solutions Bento Grid */}
+      <SolutionsSection onOpenBooking={handleOpenBooking} />
 
-      {/* 5. The Process: From Discovery to Signed Clients */}
-      <Pipeline />
+      {/* Big Metrics */}
+      <AboutPrime />
 
-      {/* 6. Our Performance Guarantee */}
-      <Guarantee />
+      {/* Testimonials */}
+      <TestimonialsSection />
 
-      {/* 7. Launch Partner Program */}
-      <LaunchPartner onOpenBooking={handleOpenBooking} />
-
-      {/* 8. Your Point of Contact: Meet Yousef Mattar & Infrastructure Partner */}
-      <Team onOpenBooking={handleOpenBooking} />
-
-      {/* 9. Get In Touch: Ready to Grow? */}
+      {/* Large CTA Form */}
       <ContactSection />
 
-      {/* 10. Footer */}
+      {/* Footer */}
       <Footer />
 
-      {/* 11. Discovery Booking Modal */}
+      {/* Booking Modal */}
       <BookingModal isOpen={bookingModalOpen} onClose={handleCloseBooking} />
     </main>
   );
