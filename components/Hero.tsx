@@ -18,13 +18,13 @@ export default function Hero({ onOpenBooking }: HeroProps) {
   };
 
   return (
-    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-[#F3F3F6]">
+    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-[#F2F4F7]">
       {/* Hand-drawn decorative background doodle graphic */}
       <div className="absolute top-20 right-10 opacity-30 hidden lg:block pointer-events-none z-0">
         <svg width="320" height="320" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M100 20L100 80M100 180L100 120M20 100L80 100M180 100L120 100M43 43L85 85M157 157L115 115M157 43L115 85M43 157L85 115"
-            stroke="#7C3AED"
+            stroke="#075CE0"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -41,13 +41,13 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 p-1.5 pr-4 rounded-full bg-lime-400/20 border border-lime-500/30"
+              className="inline-flex items-center gap-2 p-1.5 pr-4 rounded-full cyan-badge"
             >
-              <span className="px-3 py-1 rounded-full bg-[#B4F600] text-slate-900 text-xs font-bold uppercase tracking-wider">
+              <span className="px-3 py-1 rounded-full bg-[#08BEEA] text-[#04143F] text-xs font-bold uppercase tracking-wider">
                 Updates
               </span>
-              <span className="text-xs sm:text-sm font-semibold text-slate-800 flex items-center gap-1">
-                Only 5 Launch Partner Slots Left for 2026 <ArrowRight className="w-3.5 h-3.5 text-purple-600" />
+              <span className="text-xs sm:text-sm font-semibold text-[#082A78] flex items-center gap-1">
+                Only 5 Launch Partner Slots Left for 2026 <ArrowRight className="w-3.5 h-3.5 text-[#075CE0]" />
               </span>
             </motion.div>
 
@@ -56,10 +56,10 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.08] font-heading"
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-[#0A0C0D] tracking-tight leading-[1.08] font-heading"
             >
               Egypt's Premier <br />
-              <span className="purple-underline text-purple-600">BPO Growth</span> <br />
+              <span className="brand-underline text-[#075CE0]">BPO Growth</span> <br />
               Engine.
             </motion.h1>
 
@@ -68,18 +68,18 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="space-y-1 text-lg sm:text-xl font-medium text-slate-700 font-sans"
+              className="space-y-1.5 text-lg sm:text-xl font-semibold text-[#0A0C0D] font-sans"
             >
-              <p className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" />
+              <p className="flex items-center gap-2.5">
+                <CheckCircle2 className="w-5 h-5 text-[#08BEEA] shrink-0" />
                 <span>We find the clients.</span>
               </p>
-              <p className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" />
+              <p className="flex items-center gap-2.5">
+                <CheckCircle2 className="w-5 h-5 text-[#08BEEA] shrink-0" />
                 <span>We close the deal.</span>
               </p>
-              <p className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" />
+              <p className="flex items-center gap-2.5">
+                <CheckCircle2 className="w-5 h-5 text-[#08BEEA] shrink-0" />
                 <span>We run the relationship.</span>
               </p>
             </motion.div>
@@ -93,13 +93,13 @@ export default function Hero({ onOpenBooking }: HeroProps) {
             >
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-3">
-                  <div className="w-9 h-9 rounded-full bg-purple-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-[#082A78] border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow-xs">
                     YM
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-slate-900 border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-[#04143F] border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow-xs">
                     AA
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-lime-500 border-2 border-white flex items-center justify-center text-slate-900 text-xs font-bold shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-[#075CE0] border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow-xs">
                     YK
                   </div>
                 </div>
@@ -109,7 +109,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                       <Star key={star} className="w-4 h-4 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <span className="text-xs text-slate-500 font-medium">Verified Offshore Growth Partners</span>
+                  <span className="text-xs text-[#5F6C7C] font-semibold">Verified Offshore Growth Partners</span>
                 </div>
               </div>
             </motion.div>
@@ -121,26 +121,26 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-slate-200/80 relative"
+              className="w-full max-w-md bg-[#FFFFFF] rounded-3xl p-8 shadow-2xl border border-[#0A0C0D]/10 relative"
             >
               <div className="mb-6">
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full mb-3">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#075CE0] bg-[#075CE0]/10 px-3 py-1 rounded-full mb-3">
                   <Calendar className="w-3.5 h-3.5" />
                   <span>Discovery Meeting</span>
                 </div>
-                <h3 className="text-2xl font-bold font-heading text-slate-900 tracking-tight">
+                <h3 className="text-2xl font-bold font-heading text-[#0A0C0D] tracking-tight">
                   Book a Call with Yousef Mattar
                 </h3>
-                <p className="text-sm text-slate-600 mt-1 leading-relaxed">
+                <p className="text-sm text-[#5F6C7C] mt-1 leading-relaxed">
                   Business Development Manager at Prime Connect EG. Get custom outreach strategy & client acquisition roadmap.
                 </p>
               </div>
 
               {submitted ? (
-                <div className="text-center py-8 bg-purple-50 rounded-2xl border border-purple-200">
-                  <CheckCircle2 className="w-10 h-10 text-purple-600 mx-auto mb-2" />
-                  <p className="text-slate-900 font-bold text-lg">Meeting Request Received!</p>
-                  <p className="text-xs text-slate-600 mt-1 max-w-xs mx-auto">
+                <div className="text-center py-8 bg-[#F2F4F7] rounded-2xl border border-[#075CE0]/20">
+                  <CheckCircle2 className="w-10 h-10 text-[#075CE0] mx-auto mb-2" />
+                  <p className="text-[#0A0C0D] font-bold text-lg">Meeting Request Received!</p>
+                  <p className="text-xs text-[#5F6C7C] mt-1 max-w-xs mx-auto">
                     Yousef Mattar will confirm your 30-minute discovery call within 24 hours.
                   </p>
                 </div>
@@ -153,7 +153,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                       placeholder="Your full name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-purple-600 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-[#F2F4F7] border border-transparent text-[#0A0C0D] text-sm placeholder:text-[#5F6C7C] focus:outline-none focus:bg-white focus:border-[#075CE0] focus:ring-1 focus:ring-[#075CE0] transition-all"
                     />
                   </div>
                   <div>
@@ -163,7 +163,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                       placeholder="Your company name"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-purple-600 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-[#F2F4F7] border border-transparent text-[#0A0C0D] text-sm placeholder:text-[#5F6C7C] focus:outline-none focus:bg-white focus:border-[#075CE0] focus:ring-1 focus:ring-[#075CE0] transition-all"
                     />
                   </div>
                   <div>
@@ -173,7 +173,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                       placeholder="Business email address"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-purple-600 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-[#F2F4F7] border border-transparent text-[#0A0C0D] text-sm placeholder:text-[#5F6C7C] focus:outline-none focus:bg-white focus:border-[#075CE0] focus:ring-1 focus:ring-[#075CE0] transition-all"
                     />
                   </div>
 
@@ -181,15 +181,15 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                     <button
                       type="button"
                       onClick={onOpenBooking}
-                      className="w-full py-3.5 rounded-2xl bg-purple-600 text-white font-bold text-base transition-all hover:bg-purple-700 shadow-lg shadow-purple-600/30 hover:shadow-xl hover:shadow-purple-600/40 cursor-pointer flex items-center justify-center gap-2"
+                      className="w-full py-3.5 rounded-2xl bg-[#075CE0] text-white font-bold text-base transition-all hover:bg-[#082A78] shadow-lg shadow-[#075CE0]/30 cursor-pointer flex items-center justify-center gap-2"
                     >
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-4 h-4 text-[#08BEEA]" />
                       <span>Select Date & Time</span>
                     </button>
                   </div>
 
-                  <p className="text-[11px] text-slate-400 text-center font-medium flex items-center justify-center gap-1 pt-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
+                  <p className="text-[11px] text-[#5F6C7C] text-center font-semibold flex items-center justify-center gap-1 pt-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#075CE0]" />
                     <span>Includes 45-Day Performance Guarantee</span>
                   </p>
                 </form>
@@ -203,16 +203,16 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-20 pt-10 border-t border-slate-200/60"
+          className="mt-20 pt-10 border-t border-[#0A0C0D]/10"
         >
-          <p className="text-center text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">
+          <p className="text-center text-xs font-bold uppercase tracking-wider text-[#5F6C7C] mb-6">
             Connecting Offshore Talent with High-Growth Markets:
           </p>
           <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-6">
             {["USA 🇺🇸", "UK 🇬🇧", "Canada 🇨🇦", "Australia 🇦🇺", "GCC Countries 🇦🇪 🇸🇦 🇶🇦"].map((region) => (
               <span
                 key={region}
-                className="px-4 py-2 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-xs hover:border-purple-300 transition-all"
+                className="px-4 py-2 rounded-full bg-white border border-[#0A0C0D]/10 text-xs font-semibold text-[#0A0C0D] shadow-xs hover:border-[#075CE0] transition-all"
               >
                 {region}
               </span>
@@ -223,4 +223,5 @@ export default function Hero({ onOpenBooking }: HeroProps) {
     </section>
   );
 }
+
 

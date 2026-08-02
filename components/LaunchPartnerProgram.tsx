@@ -43,22 +43,22 @@ export default function LaunchPartnerProgram({ onOpenBooking }: LaunchPartnerPro
   ];
 
   return (
-    <section className="py-24 bg-[#F3F3F6] relative">
+    <section className="py-24 bg-[#F2F4F7] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="px-3.5 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold uppercase tracking-wider border border-purple-200 inline-block">
+          <span className="px-3.5 py-1 rounded-full cyan-badge text-xs font-bold uppercase tracking-wider inline-block">
             Limited Availability — February 2026
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-heading leading-tight">
-            Launch Partner <span className="purple-underline text-purple-600">Program</span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A0C0D] tracking-tight font-heading leading-tight">
+            Launch Partner <span className="brand-underline text-[#075CE0]">Program</span>
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 font-sans leading-relaxed">
+          <p className="text-base sm:text-lg text-[#5F6C7C] font-sans leading-relaxed">
             Only 5 Launch Partner slots available. Receive VIP onboarding, dedicated account teams, and locked-in rates.
           </p>
         </div>
 
-        {/* 6 Grid items styled like Framer "And more is coming" section */}
+        {/* 6 Grid items */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {perks.map((perk, idx) => {
             const IconComp = perk.icon;
@@ -69,16 +69,16 @@ export default function LaunchPartnerProgram({ onOpenBooking }: LaunchPartnerPro
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="framer-card p-8 flex items-start gap-5 hover:border-purple-300 transition-all"
+                className="framer-card p-8 flex items-start gap-5 hover:border-[#075CE0]/40 transition-all"
               >
-                <div className="w-12 h-12 rounded-2xl bg-slate-900 text-[#B4F600] flex items-center justify-center shrink-0 shadow-md">
+                <div className="w-12 h-12 rounded-2xl bg-[#04143F] text-[#08BEEA] flex items-center justify-center shrink-0 shadow-md">
                   <IconComp className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-slate-900 font-heading">
+                  <h3 className="text-lg font-bold text-[#0A0C0D] font-heading">
                     {perk.title}
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-sans">
+                  <p className="text-xs text-[#5F6C7C] leading-relaxed font-sans">
                     {perk.desc}
                   </p>
                 </div>
@@ -91,13 +91,14 @@ export default function LaunchPartnerProgram({ onOpenBooking }: LaunchPartnerPro
         <div className="text-center mt-12">
           <button
             onClick={onOpenBooking}
-            className="px-8 py-4 rounded-full bg-purple-600 text-white font-bold text-base hover:bg-purple-700 transition-all shadow-lg shadow-purple-600/30 hover:scale-105 cursor-pointer inline-flex items-center gap-2"
+            className="px-8 py-4 rounded-full bg-[#075CE0] text-white font-bold text-base hover:bg-[#082A78] transition-all shadow-lg shadow-[#075CE0]/30 hover:scale-105 cursor-pointer inline-flex items-center gap-2"
           >
             <span>Claim 1 of 5 Launch Partner Slots</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-[#08BEEA]" />
           </button>
         </div>
       </div>
     </section>
   );
 }
+

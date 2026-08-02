@@ -26,8 +26,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F3F3F6] text-slate-900 font-sans overflow-x-hidden selection:bg-purple-600 selection:text-white">
+    <main className="min-h-screen bg-[#F2F4F7] text-[#0A0C0D] font-sans overflow-x-hidden selection:bg-[#075CE0] selection:text-white">
       {/* Top Sticky Navigation */}
+
       <Navbar onOpenBooking={handleOpenBooking} />
 
       {/* Hero Section */}

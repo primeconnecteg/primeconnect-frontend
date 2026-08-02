@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, HelpCircle } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 
 export default function FaqSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -31,18 +31,18 @@ export default function FaqSection() {
   ];
 
   return (
-    <section id="faqs" className="py-24 bg-[#F3F3F6] relative">
+    <section id="faqs" className="py-24 bg-[#F2F4F7] relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16 space-y-4">
-          <span className="px-3.5 py-1 rounded-full bg-lime-400/20 text-slate-900 text-xs font-bold uppercase tracking-wider border border-lime-500/30 inline-block">
+          <span className="px-3.5 py-1 rounded-full cyan-badge text-xs font-bold uppercase tracking-wider inline-block">
             FAQs
           </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-400 font-heading">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#5F6C7C] font-heading">
             Still not convinced?
           </h3>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-heading leading-tight">
-            We've got the <span className="purple-underline text-purple-600">answers</span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A0C0D] tracking-tight font-heading leading-tight">
+            We've got the <span className="brand-underline text-[#075CE0]">answers</span>
           </h2>
         </div>
 
@@ -61,12 +61,12 @@ export default function FaqSection() {
               >
                 <button
                   onClick={() => setOpenIdx(isOpen ? null : idx)}
-                  className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors"
+                  className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-[#F2F4F7]/60 transition-colors"
                 >
-                  <span className="text-base sm:text-lg font-bold text-slate-900 font-heading">
+                  <span className="text-base sm:text-lg font-bold text-[#0A0C0D] font-heading">
                     {faq.q}
                   </span>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform ${isOpen ? "bg-purple-600 text-white rotate-180" : "bg-slate-100 text-slate-600"}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform ${isOpen ? "bg-[#075CE0] text-white rotate-180" : "bg-[#F2F4F7] text-[#5F6C7C]"}`}>
                     {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </div>
                 </button>
@@ -77,7 +77,7 @@ export default function FaqSection() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="px-6 pb-6 text-sm text-slate-600 font-sans leading-relaxed border-t border-slate-100 pt-4"
+                      className="px-6 pb-6 text-sm text-[#5F6C7C] font-sans leading-relaxed border-t border-[#0A0C0D]/10 pt-4"
                     >
                       {faq.a}
                     </motion.div>
@@ -89,9 +89,9 @@ export default function FaqSection() {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-xs font-semibold text-slate-500">
+          <p className="text-xs font-semibold text-[#5F6C7C]">
             Still have questions? Contact us at{" "}
-            <a href="mailto:info@primeconnecteg.com" className="text-purple-600 underline font-bold">
+            <a href="mailto:info@primeconnecteg.com" className="text-[#075CE0] underline font-bold">
               info@primeconnecteg.com
             </a>
           </p>
@@ -100,3 +100,4 @@ export default function FaqSection() {
     </section>
   );
 }
+
