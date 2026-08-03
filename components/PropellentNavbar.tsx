@@ -7,7 +7,7 @@ export default function PropellentNavbar() {
     <header className="sticky top-0 z-50 bg-[#F2F4F7]/90 backdrop-blur-md border-b border-gray-200/60 transition-all">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Brand Logo */}
-        <a href="#" className="flex items-center group">
+        <a href="/" className="flex items-center group">
           <img
             src="/prime-connect-logo.png"
             alt="Prime Connect EG Logo"
@@ -18,25 +18,25 @@ export default function PropellentNavbar() {
         {/* Navigation Links */}
         <nav className="hidden lg:flex items-center gap-7">
           <a
-            href="#what-we-do"
+            href="/#what-we-do"
             className="text-xs font-semibold text-[#5F6C7C] hover:text-[#082A78] transition-colors"
           >
             What We Do
           </a>
           <a
-            href="#why-egypt"
+            href="/#why-egypt"
             className="text-xs font-semibold text-[#5F6C7C] hover:text-[#082A78] transition-colors"
           >
             Why Egypt
           </a>
           <a
-            href="#how-it-works"
+            href="/#how-it-works"
             className="text-xs font-semibold text-[#5F6C7C] hover:text-[#082A78] transition-colors"
           >
             How It Works
           </a>
           <a
-            href="#guarantee"
+            href="/#guarantee"
             className="text-xs font-semibold text-[#5F6C7C] hover:text-[#082A78] transition-colors"
           >
             Our Guarantee
@@ -48,7 +48,7 @@ export default function PropellentNavbar() {
             Certifications
           </a>
           <a
-            href="#contact"
+            href="/#contact"
             className="text-xs font-semibold text-[#5F6C7C] hover:text-[#082A78] transition-colors"
           >
             Contact
@@ -58,7 +58,7 @@ export default function PropellentNavbar() {
         {/* Right CTA Button */}
         <div>
           <a
-            href="#book-call"
+            href="/#hero-main"
             className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold text-white bg-[#075CE0] hover:bg-[#082A78] rounded-full shadow-md shadow-blue-600/20 transition-all duration-200 active:scale-95"
           >
             Book a Call

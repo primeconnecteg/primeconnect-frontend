@@ -21,12 +21,12 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
   }, []);
 
   const navLinks = [
-    { label: "Services", href: "#services" },
-    { label: "Why Egypt", href: "#why-egypt" },
-    { label: "Process", href: "#process" },
-    { label: "Guarantee", href: "#guarantee" },
-    { label: "Leadership", href: "#leadership" },
-    { label: "FAQs", href: "#faqs" },
+    { label: "Services", href: "/#services" },
+    { label: "Why Egypt", href: "/#why-egypt" },
+    { label: "Process", href: "/#process" },
+    { label: "Guarantee", href: "/#guarantee" },
+    { label: "Leadership", href: "/#leadership" },
+    { label: "FAQs", href: "/#faqs" },
   ];
 
   const handleNavClick = (href: string) => {

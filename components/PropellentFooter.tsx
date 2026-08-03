@@ -9,7 +9,7 @@ export default function PropellentFooter() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           
           {/* Brand Logo */}
-          <a href="#" className="flex items-center group">
+          <a href="/" className="flex items-center group">
             <img
               src="/prime-connect-logo-white.png"
               alt="Prime Connect EG White Logo"
@@ -19,12 +19,12 @@ export default function PropellentFooter() {
 
           {/* Navigation Links */}
           <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-gray-300 font-semibold">
-            <a href="#what-we-do" className="hover:text-[#08BEEA] transition-colors">What We Do</a>
-            <a href="#why-egypt" className="hover:text-[#08BEEA] transition-colors">Why Egypt</a>
-            <a href="#how-it-works" className="hover:text-[#08BEEA] transition-colors">How It Works</a>
-            <a href="#guarantee" className="hover:text-[#08BEEA] transition-colors">Our Guarantee</a>
+            <a href="/#what-we-do" className="hover:text-[#08BEEA] transition-colors">What We Do</a>
+            <a href="/#why-egypt" className="hover:text-[#08BEEA] transition-colors">Why Egypt</a>
+            <a href="/#how-it-works" className="hover:text-[#08BEEA] transition-colors">How It Works</a>
+            <a href="/#guarantee" className="hover:text-[#08BEEA] transition-colors">Our Guarantee</a>
             <a href="/certifications" className="hover:text-[#08BEEA] transition-colors">Certifications</a>
-            <a href="#contact" className="hover:text-[#08BEEA] transition-colors">Contact</a>
+            <a href="/#contact" className="hover:text-[#08BEEA] transition-colors">Contact</a>
           </div>
 
         </div>
