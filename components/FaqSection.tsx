@@ -41,7 +41,7 @@ export default function FaqSection() {
   return (
     <section id="contact" className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-6 space-y-24">
-        
+
         {/* Leadership Team Section */}
         <div className="space-y-12">
           <ScrollReveal direction="up">
@@ -91,7 +91,7 @@ export default function FaqSection() {
 
         {/* Get In Touch Contact Form */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
+
           {/* Left Contact Info */}
           <div className="lg:col-span-5 space-y-8">
             <ScrollReveal direction="left">

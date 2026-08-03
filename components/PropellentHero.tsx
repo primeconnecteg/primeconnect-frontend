@@ -1,13 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
+import { Calendar } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import DateTimePickerModal from "./DateTimePickerModal";
 
 export default function PropellentHero() {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [preferredDate, setPreferredDate] = useState("");
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -173,8 +177,28 @@ export default function PropellentHero() {
                       />
                     </div>
                     <div>
+                      <div className="relative flex items-center">
+                        <input
+                          type="text"
+                          readOnly
+                          onClick={() => setPickerOpen(true)}
+                          placeholder="Select Preferred Date & Time..."
+                          value={preferredDate}
+                          className="w-full bg-[#F2F4F7] border border-transparent focus:border-[#075CE0] focus:bg-white text-[#0A0C0D] text-sm rounded-xl px-4 py-3 pr-11 outline-none transition-all cursor-pointer placeholder:text-gray-400 font-medium"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setPickerOpen(true)}
+                          className="absolute right-3 text-[#075CE0] hover:text-[#082A78] bg-white hover:bg-blue-50 p-1.5 rounded-lg border border-blue-100 transition-all cursor-pointer shadow-xs"
+                          title="Open Calendar"
+                        >
+                          <Calendar className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <div>
                       <textarea
-                        rows={3}
+                        rows={2}
                         placeholder="Tell us about your outsourcing needs... (optional)"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
@@ -183,7 +207,7 @@ export default function PropellentHero() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-sm rounded-xl py-3.5 transition-colors shadow-lg shadow-blue-600/25 active:scale-[0.99]"
+                      className="w-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-sm rounded-xl py-3.5 transition-colors shadow-lg shadow-blue-600/25 active:scale-[0.99] cursor-pointer"
                     >
                       Book Discovery Call
                     </button>
@@ -216,6 +240,14 @@ export default function PropellentHero() {
           </div>
         </ScrollReveal>
       </div>
+
+      {/* Interactive Calendar & Hour Selector Modal */}
+      <DateTimePickerModal
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onSelect={(dateTimeStr) => setPreferredDate(dateTimeStr)}
+        initialValue={preferredDate}
+      />
     </section>
   );
 }

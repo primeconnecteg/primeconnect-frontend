@@ -13,37 +13,38 @@ import CtaBannerSection from "@/components/CtaBannerSection";
 import PropellentFooter from "@/components/PropellentFooter";
 
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-[#F2F4F7] text-[#0A0C0D] font-sans selection:bg-[#08BEEA] selection:text-[#04143F]">
-      {/* 0. Interactive Sky Gradient Cover Hero (New Start Section) */}
-      <InteractiveCoverHero />
+      return (
+            <main className="min-h-screen bg-[#F2F4F7] text-[#0A0C0D] font-sans selection:bg-[#08BEEA] selection:text-[#04143F]">
+                  {/* 0. Interactive Sky Gradient Cover Hero (New Start Section) */}
+                  <InteractiveCoverHero />
 
-      {/* 1. Header Navigation */}
-      <PropellentNavbar />
+                  {/* 1. Header Navigation */}
+                  <PropellentNavbar />
 
-      {/* 2. Hero Section */}
-      <PropellentHero />
+                  {/* 2. Hero Section */}
+                  <PropellentHero />
 
-      {/* 3. Startup Hassle Section with 3 Lime Cards */}
-      <StartupHassleSection />
+                  {/* 3. Startup Hassle Section with 3 Lime Cards */}
+                  <StartupHassleSection />
 
-      {/* 4. Cutting Edge Features Section */}
-      <CuttingEdgeFeatures />
+                  {/* 4. Cutting Edge Features Section */}
+                  <CuttingEdgeFeatures />
 
-      {/* 5. Bento Grid & "And More is Coming" Grid */}
-      <BentoAndGridSection />
+                  {/* 5. Bento Grid & "And More is Coming" Grid */}
+                  <BentoAndGridSection />
 
-      {/* 6. Metrics & Testimonials Section */}
-      <MetricsAndTestimonials />
+                  {/* 6. Metrics & Testimonials Section */}
+                  <MetricsAndTestimonials />
 
-      {/* 7. FAQs Section */}
-      <FaqSection />
+                  {/* 7. FAQs Section */}
+                  <FaqSection />
 
-      {/* 8. Large Call To Action Banner ("Shot your startup into a new era, start now.") */}
-      <CtaBannerSection />
+                  {/* 8. Large Call To Action Banner ("Shot your startup into a new era, start now.") */}
+                  <CtaBannerSection />
 
-      {/* 9. Footer */}
-      <PropellentFooter />
-    </main>
-  );
+                  {/* 9. Footer */}
+                  <PropellentFooter />
+            </main>
+      );
 }
+
