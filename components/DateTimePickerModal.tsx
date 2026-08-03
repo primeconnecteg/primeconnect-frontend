@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Check } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Check } from "lucide-react";
 
 interface DateTimePickerModalProps {
   isOpen: boolean;
@@ -10,27 +10,6 @@ interface DateTimePickerModalProps {
   onSelect: (dateTimeStr: string) => void;
   initialValue?: string;
 }
-
-const TIME_SLOTS = [
-  "09:00 AM",
-  "09:30 AM",
-  "10:00 AM",
-  "10:30 AM",
-  "11:00 AM",
-  "11:30 AM",
-  "12:00 PM",
-  "12:30 PM",
-  "01:00 PM",
-  "01:30 PM",
-  "02:00 PM",
-  "02:30 PM",
-  "03:00 PM",
-  "03:30 PM",
-  "04:00 PM",
-  "04:30 PM",
-  "05:00 PM",
-  "05:30 PM",
-];
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_NAMES = [
@@ -69,7 +48,6 @@ export default function DateTimePickerModal({
 
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(() => new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -121,27 +99,8 @@ export default function DateTimePickerModal({
     setSelectedDate(cell.dateObj);
   };
 
-  const isTimeSlotDisabled = (slotStr: string) => {
-    if (!selectedDate) return false;
-    // Check if selectedDate is today
-    const isToday = selectedDate.getTime() === today.getTime();
-    if (!isToday) return false;
-
-    // Parse time string e.g. "09:30 AM"
-    const now = new Date();
-    const [time, modifier] = slotStr.split(" ");
-    let [hours, minutes] = time.split(":").map(Number);
-    if (modifier === "PM" && hours < 12) hours += 12;
-    if (modifier === "AM" && hours === 12) hours = 0;
-
-    const slotDate = new Date(selectedDate);
-    slotDate.setHours(hours, minutes, 0, 0);
-
-    return slotDate < now;
-  };
-
   const handleConfirm = () => {
-    if (!selectedDate || !selectedTime) return;
+    if (!selectedDate) return;
 
     const formattedDate = selectedDate.toLocaleDateString("en-US", {
       weekday: "short",
@@ -150,8 +109,7 @@ export default function DateTimePickerModal({
       year: "numeric",
     });
 
-    const finalString = `${formattedDate} at ${selectedTime}`;
-    onSelect(finalString);
+    onSelect(formattedDate);
     onClose();
   };
 
@@ -172,10 +130,10 @@ export default function DateTimePickerModal({
               </div>
               <div>
                 <h3 className="text-lg font-bold text-[#0A0C0D] font-heading">
-                  Select Preferred Date & Time
+                  Select Preferred Date
                 </h3>
                 <p className="text-xs text-[#5F6C7C]">
-                  Choose any available date and time slot
+                  Choose any available date
                 </p>
               </div>
             </div>
@@ -257,62 +215,23 @@ export default function DateTimePickerModal({
             </div>
           </div>
 
-          {/* Time Slot Selection Section */}
-          <div className="pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 mb-3">
-              <Clock className="w-4 h-4 text-[#075CE0]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#0A0C0D]">
-                Select Hour / Time Slot
-              </span>
-            </div>
-
-            {!selectedDate ? (
-              <div className="bg-[#F2F4F7] rounded-xl p-4 text-center text-xs text-[#5F6C7C]">
-                Please select a day above first to pick an available time slot.
-              </div>
-            ) : (
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
-                {TIME_SLOTS.map((slot) => {
-                  const disabled = isTimeSlotDisabled(slot);
-                  const isSelected = selectedTime === slot;
-
-                  return (
-                    <button
-                      key={slot}
-                      disabled={disabled}
-                      onClick={() => setSelectedTime(slot)}
-                      className={`py-2 px-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                        disabled
-                          ? "opacity-30 cursor-not-allowed bg-slate-100 border-transparent text-slate-400"
-                          : isSelected
-                          ? "bg-[#075CE0] text-white border-[#075CE0] shadow-md shadow-[#075CE0]/20"
-                          : "bg-[#F2F4F7] border-transparent text-[#0A0C0D] hover:border-[#075CE0] hover:text-[#075CE0]"
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
           {/* Footer Selection Summary & Submit */}
           <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-xs text-[#5F6C7C] text-center sm:text-left w-full sm:w-auto">
-              {selectedDate && selectedTime ? (
+              {selectedDate ? (
                 <div className="flex items-center gap-1.5 text-[#075CE0] font-semibold">
                   <Check className="w-4 h-4 text-[#075CE0]" />
                   <span>
                     {selectedDate.toLocaleDateString("en-US", {
+                      weekday: "short",
                       month: "short",
                       day: "numeric",
-                    })}{" "}
-                    @ {selectedTime}
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
               ) : (
-                <span>No date/time selected</span>
+                <span>No date selected</span>
               )}
             </div>
 
@@ -326,11 +245,11 @@ export default function DateTimePickerModal({
               </button>
               <button
                 type="button"
-                disabled={!selectedDate || !selectedTime}
+                disabled={!selectedDate}
                 onClick={handleConfirm}
                 className="w-1/2 sm:w-auto px-6 py-2.5 rounded-xl bg-[#075CE0] text-white text-xs font-bold shadow-lg shadow-[#075CE0]/30 hover:bg-[#082A78] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
-                Confirm Time
+                Confirm Date
               </button>
             </div>
           </div>
@@ -339,3 +258,4 @@ export default function DateTimePickerModal({
     </AnimatePresence>
   );
 }
+

@@ -128,13 +128,13 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#0A0C0D] mb-1">Preferred Date / Time</label>
+                    <label className="block text-xs font-semibold text-[#0A0C0D] mb-1">Preferred Date</label>
                     <div className="relative flex items-center">
                       <input
                         type="text"
                         readOnly
                         onClick={() => setPickerOpen(true)}
-                        placeholder="Click to select Date & Time..."
+                        placeholder="Click to select Date..."
                         value={preferredDate}
                         className="w-full px-4 py-3 pr-10 rounded-xl bg-[#F2F4F7] border border-transparent text-[#0A0C0D] text-sm placeholder:text-[#5F6C7C] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#075CE0] transition-all cursor-pointer select-none font-medium"
                       />

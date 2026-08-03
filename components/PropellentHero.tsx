@@ -182,7 +182,7 @@ export default function PropellentHero() {
                           type="text"
                           readOnly
                           onClick={() => setPickerOpen(true)}
-                          placeholder="Select Preferred Date & Time..."
+                          placeholder="Select Preferred Date..."
                           value={preferredDate}
                           className="w-full bg-[#F2F4F7] border border-transparent focus:border-[#075CE0] focus:bg-white text-[#0A0C0D] text-sm rounded-xl px-4 py-3 pr-11 outline-none transition-all cursor-pointer placeholder:text-gray-400 font-medium"
                         />
