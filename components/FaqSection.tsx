@@ -66,7 +66,7 @@ export default function FaqSection() {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-white relative">
+    <section id="contact" className="py-24 bg-white relative scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 space-y-24">
 
         {/* Leadership Team Section */}
@@ -106,7 +106,7 @@ export default function FaqSection() {
 
         {/* Infrastructure Partner Verified Note */}
         <ScrollReveal direction="up">
-          <div id="certifications" className="bg-[#082A78] text-white rounded-3xl p-8 text-center space-y-2 shadow-lg border border-blue-500/20 max-w-4xl mx-auto">
+          <div id="certifications" className="bg-[#082A78] text-white rounded-3xl p-8 text-center space-y-2 shadow-lg border border-blue-500/20 max-w-4xl mx-auto scroll-mt-28">
             <span className="text-xs font-extrabold text-[#08BEEA] uppercase tracking-widest block">
               INFRASTRUCTURE PARTNER — VERIFIED
             </span>

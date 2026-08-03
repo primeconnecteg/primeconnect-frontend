@@ -27,7 +27,7 @@ function ServiceIcon({ title }: { title: string }) {
 
 export default function StartupHassleSection() {
   return (
-    <section id="what-we-do" className="py-24 bg-white relative">
+    <section id="what-we-do" className="py-24 bg-white relative scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Section Header */}

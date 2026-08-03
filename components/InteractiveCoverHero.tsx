@@ -133,29 +133,29 @@ export default function InteractiveCoverHero() {
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#08BEEA]/15 rounded-full blur-3xl pointer-events-none z-0" />
 
       {/* Centered Modern Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6 space-y-8 flex flex-col items-center">
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8 flex flex-col items-center">
         
         {/* Modern Bold Sans Headline */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.08] font-sans drop-shadow-lg">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.08] font-sans drop-shadow-lg">
           Scale Your BPO
           <br />
           <span className="text-[#08BEEA]">Client Pipeline</span>
         </h1>
 
         {/* Summarized Subtitle */}
-        <p className="text-base sm:text-lg text-blue-100 font-medium max-w-lg leading-relaxed font-sans drop-shadow-sm">
+        <p className="text-sm sm:text-base md:text-lg text-blue-100 font-medium max-w-lg leading-relaxed font-sans drop-shadow-sm px-2">
           We find, close, and manage end-client relationships for offshore outsourcing companies.
         </p>
 
-        {/* Brand-Colored CTA Button */}
-        <div className="pt-4">
+        {/* Dark Navy Blue CTA Button */}
+        <div className="pt-2 sm:pt-4">
           <button
             onClick={handleScrollDown}
-            className="inline-flex items-center justify-center px-8 py-4 bg-[#08BEEA] hover:bg-[#075CE0] text-[#04143F] hover:text-white font-black text-sm md:text-base rounded-full shadow-xl shadow-cyan-400/30 transition-all duration-300 transform hover:scale-105 active:scale-95 group font-sans"
+            className="inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 bg-[#04143F] hover:bg-[#082A78] text-white font-black text-sm md:text-base rounded-full border border-[#08BEEA]/40 hover:border-[#08BEEA] shadow-xl shadow-blue-950/50 hover:shadow-[#08BEEA]/25 transition-all duration-300 transform hover:scale-105 active:scale-95 group font-sans cursor-pointer"
           >
-            Explore BPO Engine
+            <span>Explore BPO Engine</span>
             <svg
-              className="w-4 h-4 ml-2 transition-transform group-hover:translate-y-1"
+              className="w-4 h-4 ml-2 text-[#08BEEA] group-hover:text-white transition-all duration-200 group-hover:translate-y-1"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

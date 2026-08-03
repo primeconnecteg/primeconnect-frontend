@@ -5,7 +5,7 @@ import ScrollReveal from "./ScrollReveal";
 
 export default function CuttingEdgeFeatures() {
   return (
-    <section id="why-egypt" className="py-24 bg-[#F2F4F7] relative">
+    <section id="why-egypt" className="py-24 bg-[#F2F4F7] relative scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Top Advantage Pill & Section Title */}

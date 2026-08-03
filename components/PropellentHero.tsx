@@ -58,20 +58,20 @@ export default function PropellentHero() {
   };
 
   return (
-    <section id="hero-main" className="relative pt-8 pb-20 overflow-hidden bg-[#F2F4F7] scroll-mt-24">
-      <div className="max-w-7xl mx-auto px-6 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section id="hero-main" className="relative pt-6 sm:pt-8 pb-16 sm:pb-20 overflow-hidden bg-[#F2F4F7] scroll-mt-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Left Column: Prime Connect Headlines & Copy */}
-          <div className="lg:col-span-7 space-y-6 relative z-10">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 relative z-10">
             
             <ScrollReveal direction="up" delay={0.1}>
               {/* Top Announcement Badge */}
-              <div className="inline-flex items-center gap-2 bg-white rounded-full p-1 pr-4 border border-blue-200/80 shadow-sm">
-                <span className="bg-[#08BEEA] text-[#04143F] font-extrabold text-xs px-3 py-1 rounded-full tracking-wide">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white rounded-full p-1 pr-3 sm:pr-4 border border-blue-200/80 shadow-sm max-w-full">
+                <span className="bg-[#08BEEA] text-[#04143F] font-extrabold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-full tracking-wide shrink-0">
                   PRIME CONNECT EG
                 </span>
-                <span className="text-xs font-bold text-[#082A78]">
+                <span className="text-[11px] sm:text-xs font-bold text-[#082A78] truncate">
                   Egypt&apos;s Premier BPO Growth Engine
                 </span>
               </div>
@@ -79,7 +79,7 @@ export default function PropellentHero() {
 
             <ScrollReveal direction="up" delay={0.2}>
               {/* Main Headline with Cobalt Blue Brush Underline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0C0D] tracking-tight leading-[1.1]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#0A0C0D] tracking-tight leading-[1.1]">
                 <span className="text-[#082A78]">PRIME CONNECT EG</span>
                 <br />
                 <span className="relative inline-block">
@@ -107,7 +107,7 @@ export default function PropellentHero() {
 
             <ScrollReveal direction="up" delay={0.3}>
               {/* Subheading Paragraph & Discovery Call CTA */}
-              <p className="text-base sm:text-lg text-[#5F6C7C] max-w-xl font-medium leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg text-[#5F6C7C] max-w-xl font-medium leading-relaxed">
                 Book a Free Discovery Call with <span className="font-bold text-[#082A78]">Yousef Mattar</span> to explore how we scale your BPO end-client pipeline.
               </p>
             </ScrollReveal>
@@ -122,7 +122,7 @@ export default function PropellentHero() {
                   {["USA", "UK", "Canada", "Australia", "GCC"].map((country) => (
                     <span
                       key={country}
-                      className="bg-white text-[#04143F] text-xs font-bold px-3.5 py-1.5 rounded-full border border-gray-200 shadow-sm"
+                      className="bg-white text-[#04143F] text-xs font-bold px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-gray-200 shadow-sm"
                     >
                       🇺🇸/🇬🇧 {country}
                     </span>
@@ -151,7 +151,7 @@ export default function PropellentHero() {
               </svg>
 
               {/* Main Form Card */}
-              <div className="relative z-10 bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-gray-200/80 propellent-hero-shadow">
+              <div className="relative z-10 bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-gray-200/80 propellent-hero-shadow">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-[#082A78] text-white flex items-center justify-center font-bold text-sm">
                     YM

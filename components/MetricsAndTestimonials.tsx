@@ -5,7 +5,7 @@ import ScrollReveal from "./ScrollReveal";
 
 export default function MetricsAndTestimonials() {
   return (
-    <section id="guarantee" className="py-24 bg-[#F2F4F7] relative overflow-hidden">
+    <section id="guarantee" className="py-24 bg-[#F2F4F7] relative overflow-hidden scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 space-y-20">
         
         {/* Performance Guarantee Banner */}

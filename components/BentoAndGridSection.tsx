@@ -44,7 +44,7 @@ export default function BentoAndGridSection() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-white relative">
+    <section id="how-it-works" className="py-24 bg-white relative scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 space-y-20">
         
         {/* Top Header */}
