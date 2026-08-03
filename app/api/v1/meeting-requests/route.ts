@@ -50,13 +50,16 @@ export async function POST(request: Request) {
   const normalizedEmail = normalized.values.businessEmail.trim().toLowerCase();
   const apiMeetingDate = formatMeetingDateForApi(meetingDate);
 
-  // Forward to FastAPI backend
+  // Forward to FastAPI backend (defaults to local FastAPI port 8000 in local dev)
   const apiUrl =
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "https://primeconnect-api.vercel.app";
+    (process.env.NODE_ENV === "development" ? "http://localhost:8000" : "https://primeconnect-api.vercel.app");
 
-  const targetUrl = `${apiUrl.replace(/\/$/, "")}/api/v1/meeting-requests`;
+  const baseClean = apiUrl.replace(/\/$/, "");
+  const targetUrl = baseClean.endsWith("/api/v1")
+    ? `${baseClean}/meeting-requests`
+    : `${baseClean}/api/v1/meeting-requests`;
 
   console.log(`[API Route] Forwarding to FastAPI: ${targetUrl}`);
 

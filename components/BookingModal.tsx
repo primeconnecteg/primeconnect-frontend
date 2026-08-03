@@ -14,6 +14,7 @@ interface BookingModalProps {
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
@@ -25,17 +26,42 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg("");
+
+    if (!preferredDate) {
+      setErrorMsg("Please select a preferred meeting date.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      await fetch("/api/v1/meeting-requests", {
+      const res = await fetch("/api/v1/meeting-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, company, preferredDate })
-      }).catch(() => {});
-    } catch (err) {}
+        body: JSON.stringify({
+          fullName: name,
+          companyName: company,
+          businessEmail: email,
+          meetingDate: preferredDate,
+          comment: ""
+        })
+      });
 
-    setLoading(false);
-    setSubmitted(true);
+      const data = await res.json().catch(() => null);
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else if (res.status === 409) {
+        setErrorMsg("A pending meeting request already exists for this email and date.");
+      } else {
+        const msg = data?.message || data?.detail || data?.error || "Failed to submit meeting request. Please try again.";
+        setErrorMsg(typeof msg === "string" ? msg : JSON.stringify(msg));
+      }
+    } catch (err: any) {
+      setErrorMsg("Network error connecting to server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -148,6 +174,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       </button>
                     </div>
                   </div>
+
+                  {errorMsg && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl leading-relaxed">
+                      ⚠️ {errorMsg}
+                    </div>
+                  )}
 
                   <button
                     type="submit"

@@ -135,21 +135,39 @@ export function normalizeMeetingRequestApiPayload(body: unknown): {
   };
   errors: MeetingRequestFieldErrors;
 } {
-  const payload = (body ?? {}) as Partial<MeetingRequestApiPayload>;
-  const meetingDate =
-    typeof payload.meeting_date === "string" ? parseMeetingDateFromApi(payload.meeting_date) : undefined;
+  const payload = (body ?? {}) as Record<string, any>;
+  
+  const rawFullName = payload.full_name ?? payload.fullName ?? payload.name ?? "";
+  const rawCompanyName = payload.company_name ?? payload.companyName ?? payload.company ?? "";
+  const rawBusinessEmail = payload.business_email ?? payload.businessEmail ?? payload.email ?? "";
+  const rawComment = payload.comment ?? payload.comments ?? payload.message ?? "";
+  const rawMeetingDate = payload.meeting_date ?? payload.meetingDate ?? payload.preferredDate ?? payload.date;
+
+  let meetingDate: Date | undefined = undefined;
+  if (typeof rawMeetingDate === "string" && rawMeetingDate.trim()) {
+    const cleanDateStr = rawMeetingDate.split("T")[0].trim();
+    meetingDate = parseMeetingDateFromApi(cleanDateStr);
+    if (!meetingDate) {
+      const parsedDirect = new Date(rawMeetingDate);
+      if (!isNaN(parsedDirect.getTime())) {
+        meetingDate = startOfToday(parsedDirect);
+      }
+    }
+  } else if (rawMeetingDate instanceof Date) {
+    meetingDate = startOfToday(rawMeetingDate);
+  }
 
   return {
     values: {
-      fullName: typeof payload.full_name === "string" ? payload.full_name : "",
-      companyName: typeof payload.company_name === "string" ? payload.company_name : "",
-      businessEmail: typeof payload.business_email === "string" ? payload.business_email : "",
-      comment: typeof payload.comment === "string" ? payload.comment : "",
+      fullName: String(rawFullName),
+      companyName: String(rawCompanyName),
+      businessEmail: String(rawBusinessEmail),
+      comment: String(rawComment),
       meetingDate,
     },
     errors: {
-      ...(typeof payload.meeting_date === "string" && !meetingDate
-        ? { meetingDate: "Please provide a valid meeting date in YYYY-MM-DD format." }
+      ...(rawMeetingDate && !meetingDate
+        ? { meetingDate: "Please provide a valid meeting date (e.g. YYYY-MM-DD)." }
         : {}),
     },
   };

@@ -9,11 +9,38 @@ export default function FaqSection() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && message) {
-      setSent(true);
+    setLoading(true);
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/v1/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          company,
+          email,
+          message
+        })
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (res.ok) {
+        setSent(true);
+      } else {
+        const msg = data?.message || data?.detail || data?.error || "Failed to send message. Please check required fields.";
+        setErrorMsg(typeof msg === "string" ? msg : JSON.stringify(msg));
+      }
+    } catch (err: any) {
+      setErrorMsg("Network error connecting to backend service.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -199,11 +226,18 @@ export default function FaqSection() {
                       ></textarea>
                     </div>
 
+                    {errorMsg && (
+                      <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl leading-relaxed">
+                        ⚠️ {errorMsg}
+                      </div>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-sm rounded-xl py-3.5 transition-colors shadow-md active:scale-95"
+                      disabled={loading}
+                      className="w-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-sm rounded-xl py-3.5 transition-colors shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
                     >
-                      Send Message
+                      {loading ? "Sending..." : "Send Message"}
                     </button>
                   </form>
                 )}

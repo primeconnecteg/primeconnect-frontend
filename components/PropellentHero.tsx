@@ -13,11 +13,47 @@ export default function PropellentHero() {
   const [preferredDate, setPreferredDate] = useState("");
   const [pickerOpen, setPickerOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubmitted(true);
+    setLoading(true);
+    setErrorMsg("");
+
+    if (!preferredDate) {
+      setErrorMsg("Please select a preferred meeting date.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/v1/meeting-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: name,
+          companyName: company,
+          businessEmail: email,
+          meetingDate: preferredDate,
+          comment: message
+        })
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else if (res.status === 409) {
+        setErrorMsg("A pending discovery call already exists for this email and date.");
+      } else {
+        const msg = data?.message || data?.detail || data?.error || "Failed to submit request. Please check fields.";
+        setErrorMsg(typeof msg === "string" ? msg : JSON.stringify(msg));
+      }
+    } catch (err: any) {
+      setErrorMsg("Network error connecting to backend service.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -205,11 +241,18 @@ export default function PropellentHero() {
                         className="w-full bg-[#F2F4F7] border border-transparent focus:border-[#075CE0] focus:bg-white text-[#0A0C0D] text-sm rounded-xl px-4 py-3 outline-none transition-all placeholder:text-gray-400"
                       />
                     </div>
+                    {errorMsg && (
+                      <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl leading-relaxed">
+                        ⚠️ {errorMsg}
+                      </div>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-sm rounded-xl py-3.5 transition-colors shadow-lg shadow-blue-600/25 active:scale-[0.99] cursor-pointer"
+                      disabled={loading}
+                      className="w-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-sm rounded-xl py-3.5 transition-colors shadow-lg shadow-blue-600/25 active:scale-[0.99] disabled:opacity-50 cursor-pointer"
                     >
-                      Book Discovery Call
+                      {loading ? "Submitting..." : "Book Discovery Call"}
                     </button>
                     <p className="text-[11px] text-[#5F6C7C] text-center pt-2">
                       Powered by{" "}
