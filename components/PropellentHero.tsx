@@ -58,50 +58,56 @@ export default function PropellentHero() {
   };
 
   return (
-    <section id="hero-main" className="relative pt-6 sm:pt-8 pb-16 sm:pb-20 overflow-hidden bg-[#F2F4F7] scroll-mt-24">
+    <section id="hero-main" className="relative pt-2 sm:pt-4 pb-16 sm:pb-20 overflow-hidden bg-[#F2F4F7] scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Left Column: Prime Connect Headlines & Copy */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6 relative z-10">
+          <div className="lg:col-span-7 space-y-6 lg:space-y-8 relative z-10">
             
             <ScrollReveal direction="up" delay={0.1}>
-              {/* Top Announcement Badge */}
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white rounded-full p-1 pr-3 sm:pr-4 border border-blue-200/80 shadow-sm max-w-full">
-                <span className="bg-[#08BEEA] text-[#04143F] font-extrabold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-full tracking-wide shrink-0">
-                  PRIME CONNECT EG
-                </span>
-                <span className="text-[11px] sm:text-xs font-bold text-[#082A78] truncate">
-                  Egypt&apos;s Premier BPO Growth Engine
-                </span>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal direction="up" delay={0.2}>
-              {/* Main Headline with Cobalt Blue Brush Underline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#0A0C0D] tracking-tight leading-[1.1]">
-                <span className="text-[#082A78]">PRIME CONNECT EG</span>
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#0A0C0D] tracking-tight leading-[1.15]">
+                We find the clients.
                 <br />
-                <span className="relative inline-block">
-                  We find the clients.
-                  {/* Cobalt Brush Underline SVG */}
+                We close the deal.
+                <br />
+                We run the{" "}
+                <span className="relative inline-block text-[#075CE0]">
+                  relationship.
+                  {/* Multi-Stroke Hand-Drawn Marker Underline matching photo */}
                   <svg
-                    className="absolute -bottom-2 left-0 w-full h-4 text-[#075CE0] z-0 overflow-visible"
-                    viewBox="0 0 200 20"
+                    className="absolute -bottom-2 sm:-bottom-3 left-0 w-full h-3.5 sm:h-4 text-[#08BEEA] pointer-events-none z-0 overflow-visible"
+                    viewBox="0 0 220 22"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
+                    {/* Stroke 1 */}
                     <path
-                      d="M3 14C50 4 150 4 197 12C150 18 50 18 3 14Z"
-                      fill="currentColor"
+                      d="M3 5C55 3 165 2.5 216 5.5"
+                      stroke="currentColor"
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                      opacity="0.95"
+                    />
+                    {/* Stroke 2 */}
+                    <path
+                      d="M7 11.5C65 9.5 155 9.5 213 12"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
                       opacity="0.85"
+                    />
+                    {/* Stroke 3 */}
+                    <path
+                      d="M2 18C48 16 172 16 218 18.5"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      opacity="0.75"
                     />
                   </svg>
                 </span>
-                <br />
-                <span className="text-[#075CE0]">We close the deal.</span>
-                <br />
-                We run the relationship.
               </h1>
             </ScrollReveal>
 

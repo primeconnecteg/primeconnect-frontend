@@ -19,6 +19,7 @@ export default function InteractiveCoverHero() {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
+      initParticles();
     };
     window.addEventListener("resize", handleResize);
 
@@ -39,50 +40,127 @@ export default function InteractiveCoverHero() {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
 
-    // Spacious distance between diagonal lines
-    const lineSpacing = 135;
-    const segmentLength = 15;
+    // Dynamic Floating Particles System
+    interface Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      baseAlpha: number;
+      pulseSpeed: number;
+      phase: number;
+      color: string;
+    }
+
+    let particles: Particle[] = [];
+    const particleCount = Math.min(80, Math.floor((width * height) / 18000));
+
+    const colors = ["#08BEEA", "#38BDF8", "#60A5FA", "#FFFFFF"];
+
+    const initParticles = () => {
+      particles = [];
+      const count = Math.min(80, Math.floor((width * height) / 18000));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6,
+          radius: Math.random() * 2 + 1,
+          baseAlpha: Math.random() * 0.4 + 0.2,
+          pulseSpeed: Math.random() * 0.03 + 0.01,
+          phase: Math.random() * Math.PI * 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        });
+      }
+    };
+
+    initParticles();
+
+    let waveTime = 0;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
+      waveTime += 0.015;
 
-      const minK = -height;
-      const maxK = width;
+      // 1. Draw Gentle Glowing Sine Mesh Waves in Background
+      ctx.save();
+      for (let w = 0; w < 3; w++) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(8, 190, 234, ${0.05 + w * 0.02})`;
+        ctx.lineWidth = 1.5 + w;
+        for (let x = 0; x < width; x += 15) {
+          const y =
+            height * (0.45 + w * 0.15) +
+            Math.sin(x * 0.003 + waveTime + w * 1.5) * 35 +
+            Math.cos(x * 0.006 - waveTime * 0.8) * 20;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
 
-      // Draw Diagonal Lines with Localized Mouse Hover Highlight
-      for (let k = minK; k < maxK; k += lineSpacing) {
-        const xStart = Math.max(0, k);
-        const xEnd = Math.min(width, height + k);
+      // 2. Update & Draw Particles & Constellation Beams
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
 
-        for (let x = xStart; x < xEnd; x += segmentLength) {
-          const nextX = Math.min(xEnd, x + segmentLength);
-          const y1 = x - k;
-          const y2 = nextX - k;
+        // Move particle
+        p.x += p.vx;
+        p.y += p.vy;
 
-          const midX = (x + nextX) / 2;
-          const midY = (y1 + y2) / 2;
+        // Wrap edges
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
 
-          const dx = mouseX - midX;
-          const dy = mouseY - midY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+        // Mouse Magnetism & Hover Effect
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        let alpha = p.baseAlpha + Math.sin(waveTime * p.pulseSpeed * 60 + p.phase) * 0.15;
 
-          ctx.beginPath();
-          ctx.moveTo(x, y1);
-          ctx.lineTo(nextX, y2);
+        if (dist < 180 && mouseX > 0) {
+          const force = (1 - dist / 180);
+          p.x += (dx / dist) * force * 1.2;
+          p.y += (dy / dist) * force * 1.2;
+          alpha = Math.min(1, alpha + force * 0.6);
+        }
 
-          if (dist < 160 && mouseX > 0 && mouseY > 0) {
-            const hoverFactor = (1 - dist / 160) ** 2;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.04 + hoverFactor * 0.75})`;
-            ctx.lineWidth = 0.7 + hoverFactor * 1.3;
-          } else {
-            // Very low opacity for unhovered lines
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
-            ctx.lineWidth = 0.7;
+        // Draw particle dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius * (dist < 180 ? 1.4 : 1), 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0.1, alpha);
+        ctx.shadowBlur = dist < 180 ? 12 : 6;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+
+        // Connect nearby particles with glowing beams
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const pdx = p.x - p2.x;
+          const pdy = p.y - p2.y;
+          const pDist = Math.sqrt(pdx * pdx + pdy * pdy);
+          const maxLinkDist = 135;
+
+          if (pDist < maxLinkDist) {
+            const linkAlpha = (1 - pDist / maxLinkDist) * 0.18 * alpha;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = "rgba(8, 190, 234, 1)";
+            ctx.globalAlpha = linkAlpha;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
           }
-          ctx.stroke();
         }
       }
 
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
       animationFrameId = requestAnimationFrame(render);
     };
 
@@ -129,33 +207,33 @@ export default function InteractiveCoverHero() {
         className="absolute inset-0 w-full h-full pointer-events-auto z-0"
       />
 
-      {/* Center Ambient Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#08BEEA]/15 rounded-full blur-3xl pointer-events-none z-0" />
+      {/* Center Ambient Glow with Breathing Pulse */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] sm:w-[750px] sm:h-[750px] bg-[#08BEEA]/20 rounded-full blur-3xl pointer-events-none z-0 animate-ambient-pulse" />
 
       {/* Centered Modern Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8 flex flex-col items-center">
+      <div className="relative z-10 text-center max-w-5xl mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8 flex flex-col items-center">
         
-        {/* Modern Bold Sans Headline */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.08] font-sans drop-shadow-lg">
+        {/* Modern Bold Sans Headline with Larger Text & Animated Gradient */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-[1.08] font-sans drop-shadow-xl animate-hero-fade-in-1">
           Scale Your BPO
           <br />
-          <span className="text-[#08BEEA]">Client Pipeline</span>
+          <span className="animate-gradient-text inline-block">Client Pipeline</span>
         </h1>
 
-        {/* Summarized Subtitle */}
-        <p className="text-sm sm:text-base md:text-lg text-blue-100 font-medium max-w-lg leading-relaxed font-sans drop-shadow-sm px-2">
+        {/* Summarized Subtitle with Larger Font */}
+        <p className="text-base sm:text-xl md:text-2xl text-blue-100 font-medium max-w-2xl leading-relaxed font-sans drop-shadow-md px-2 animate-hero-fade-in-2">
           We find, close, and manage end-client relationships for offshore outsourcing companies.
         </p>
 
-        {/* Dark Navy Blue CTA Button */}
-        <div className="pt-2 sm:pt-4">
+        {/* Dark Navy Blue CTA Button with Larger Touch Area & Animated Entrance */}
+        <div className="pt-3 sm:pt-6 animate-hero-fade-in-3">
           <button
             onClick={handleScrollDown}
-            className="inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 bg-[#04143F] hover:bg-[#082A78] text-white font-black text-sm md:text-base rounded-full border border-[#08BEEA]/40 hover:border-[#08BEEA] shadow-xl shadow-blue-950/50 hover:shadow-[#08BEEA]/25 transition-all duration-300 transform hover:scale-105 active:scale-95 group font-sans cursor-pointer"
+            className="inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 bg-[#04143F] hover:bg-[#082A78] text-white font-black text-base md:text-lg rounded-full border border-[#08BEEA]/50 hover:border-[#08BEEA] shadow-2xl shadow-blue-950/60 hover:shadow-[#08BEEA]/30 transition-all duration-300 transform hover:scale-105 active:scale-95 group font-sans cursor-pointer"
           >
             <span>Explore BPO Engine</span>
             <svg
-              className="w-4 h-4 ml-2 text-[#08BEEA] group-hover:text-white transition-all duration-200 group-hover:translate-y-1"
+              className="w-5 h-5 ml-2.5 text-[#08BEEA] group-hover:text-white transition-all duration-200 group-hover:translate-y-1"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

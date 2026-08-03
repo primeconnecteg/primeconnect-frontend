@@ -12,7 +12,7 @@ export default function PropellentNavbar() {
     { label: "Why Egypt", href: "/#why-egypt" },
     { label: "How It Works", href: "/#how-it-works" },
     { label: "Our Guarantee", href: "/#guarantee" },
-    { label: "Certifications", href: "/#certifications" },
+    { label: "Certifications", href: "/certifications" },
     { label: "Contact", href: "/#contact" },
   ];
 
