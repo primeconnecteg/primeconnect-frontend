@@ -19,6 +19,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [preferredDate, setPreferredDate] = useState("");
+  const [message, setMessage] = useState("");
   const [pickerOpen, setPickerOpen] = useState(false);
 
   if (!isOpen) return null;
@@ -43,7 +44,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           companyName: company,
           businessEmail: email,
           meetingDate: preferredDate,
-          comment: ""
+          comment: message
         })
       });
 
@@ -173,6 +174,17 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                         <Calendar className="w-5 h-5" />
                       </button>
                     </div>
+                  </div>
+
+                  <div>
+                    <textarea
+                      rows={2}
+                      maxLength={1000}
+                      placeholder="Tell us about your outsourcing needs... (optional)"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#F2F4F7] border border-transparent text-[#0A0C0D] text-sm placeholder:text-[#5F6C7C] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#075CE0] transition-all"
+                    />
                   </div>
 
                   {errorMsg && (

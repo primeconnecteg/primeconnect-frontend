@@ -232,6 +232,7 @@ export default function PropellentHero() {
                     <div>
                       <textarea
                         rows={2}
+                        maxLength={1000}
                         placeholder="Tell us about your outsourcing needs... (optional)"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
