@@ -1,55 +1,49 @@
 "use client";
 
-import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import WhyPrime from "@/components/WhyPrime";
-import SolutionsSection from "@/components/SolutionsSection";
-import AboutPrime from "@/components/AboutPrime";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
-import BookingModal from "@/components/BookingModal";
+import React from "react";
+import InteractiveCoverHero from "@/components/InteractiveCoverHero";
+import PropellentNavbar from "@/components/PropellentNavbar";
+import PropellentHero from "@/components/PropellentHero";
+import StartupHassleSection from "@/components/StartupHassleSection";
+import CuttingEdgeFeatures from "@/components/CuttingEdgeFeatures";
+import BentoAndGridSection from "@/components/BentoAndGridSection";
+import MetricsAndTestimonials from "@/components/MetricsAndTestimonials";
+import FaqSection from "@/components/FaqSection";
+import CtaBannerSection from "@/components/CtaBannerSection";
+import PropellentFooter from "@/components/PropellentFooter";
 
 export default function Home() {
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
-
-  const handleOpenBooking = () => {
-    setBookingModalOpen(true);
-  };
-
-  const handleCloseBooking = () => {
-    setBookingModalOpen(false);
-  };
-
   return (
-    <main className="min-h-screen bg-black text-white font-sans overflow-x-hidden selection:bg-white selection:text-black">
-      {/* Navigation */}
-      <Navbar onOpenBooking={handleOpenBooking} />
+    <main className="min-h-screen bg-[#F2F4F7] text-[#0A0C0D] font-sans selection:bg-[#08BEEA] selection:text-[#04143F]">
+      {/* 0. Interactive Sky Gradient Cover Hero (New Start Section) */}
+      <InteractiveCoverHero />
 
-      {/* Hero */}
-      <Hero onOpenBooking={handleOpenBooking} />
+      {/* 1. Header Navigation */}
+      <PropellentNavbar />
 
-      {/* Intro text / Features */}
-      <WhyPrime />
+      {/* 2. Hero Section */}
+      <PropellentHero />
 
-      {/* Core Solutions Bento Grid */}
-      <SolutionsSection onOpenBooking={handleOpenBooking} />
+      {/* 3. Startup Hassle Section with 3 Lime Cards */}
+      <StartupHassleSection />
 
-      {/* Big Metrics */}
-      <AboutPrime />
+      {/* 4. Cutting Edge Features Section */}
+      <CuttingEdgeFeatures />
 
-      {/* Testimonials */}
-      <TestimonialsSection />
+      {/* 5. Bento Grid & "And More is Coming" Grid */}
+      <BentoAndGridSection />
 
-      {/* Large CTA Form */}
-      <ContactSection />
+      {/* 6. Metrics & Testimonials Section */}
+      <MetricsAndTestimonials />
 
-      {/* Footer */}
-      <Footer />
+      {/* 7. FAQs Section */}
+      <FaqSection />
 
-      {/* Booking Modal */}
-      <BookingModal isOpen={bookingModalOpen} onClose={handleCloseBooking} />
+      {/* 8. Large Call To Action Banner ("Shot your startup into a new era, start now.") */}
+      <CtaBannerSection />
+
+      {/* 9. Footer */}
+      <PropellentFooter />
     </main>
   );
 }

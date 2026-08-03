@@ -1,11 +1,8 @@
 @import "tailwindcss";
 
-@theme {
-  --font-heading: var(--font-poppins), sans-serif;
-  --font-sans: var(--font-vietnam), system-ui, sans-serif;
-}
-
 :root {
+  --font-heading: var(--font-poppins), system-ui, sans-serif;
+  --font-sans: var(--font-vietnam), system-ui, sans-serif;
   --color-prime-blue: #082A78;
   --color-deep-navy: #04143F;
   --color-cobalt: #075CE0;
@@ -17,51 +14,23 @@
 }
 
 body {
-  background-color: var(--color-off-white);
-  color: var(--color-graphite);
+  background-color: #F2F4F7;
+  color: #0A0C0D;
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Typography styles matching exactly Framer inspector */
-.heading-display {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 6vw, 72px);
-  line-height: 1.05; /* 75.6px / 72px */
-  letter-spacing: -3px;
-  font-weight: 500;
-  color: var(--color-graphite);
+/* Custom Card Shadows & Glassmorphism */
+.propellent-card-shadow {
+  box-shadow: 0 20px 40px -15px rgba(4, 20, 63, 0.08);
 }
 
-.text-paragraph {
-  font-family: var(--font-sans);
-  font-size: 20px;
-  line-height: 27px;
-  font-weight: 500;
-  color: var(--color-steel);
+.propellent-hero-shadow {
+  box-shadow: 0 30px 60px -12px rgba(7, 92, 224, 0.15), 0 18px 36px -18px rgba(4, 20, 63, 0.1);
 }
 
-.hand-drawn-underline {
-  position: relative;
-  display: inline-block;
-  z-index: 1;
+.propellent-glow {
+  filter: drop-shadow(0px 10px 20px rgba(8, 190, 234, 0.4));
 }
 
-.hand-drawn-underline::after {
-  content: '';
-  position: absolute;
-  bottom: 0.1em;
-  left: -2%;
-  width: 104%;
-  height: 0.35em;
-  background-color: var(--color-cobalt);
-  opacity: 0.8;
-  z-index: -1;
-  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; /* Squiggly hand-drawn effect */
-  transform: rotate(-1.5deg);
-}
-
-.framer-card-shadow {
-  box-shadow: rgba(0, 0, 0, 0.1) 5px 25px 25px 0px;
-}
