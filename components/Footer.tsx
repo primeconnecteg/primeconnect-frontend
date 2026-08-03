@@ -78,9 +78,6 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-[#0A0C0D]/10 flex flex-col sm:flex-row items-center justify-between text-xs text-[#5F6C7C] gap-4">
           <p>© 2026 Prime Connect EG · Cairo, Egypt. All rights reserved.</p>
-          <p className="font-mono text-[#075CE0] font-bold">
-            Powered by All States Careers
-          </p>
         </div>
       </div>
     </footer>

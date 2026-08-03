@@ -55,7 +55,7 @@ export default function FaqSection() {
       initials: "YK",
       name: "Yousef Kholy",
       role: "Co-Founder & Partner",
-      phone: "",
+      phone: "+20 100 815 0955",
     },
     {
       initials: "YM",

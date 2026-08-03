@@ -42,7 +42,7 @@ export default function PropellentNavbar() {
             Our Guarantee
           </a>
           <a
-            href="#certifications"
+            href="/certifications"
             className="text-xs font-semibold text-[#5F6C7C] hover:text-[#082A78] transition-colors"
           >
             Certifications

@@ -71,11 +71,8 @@ export default function PropellentHero() {
                 <span className="bg-[#08BEEA] text-[#04143F] font-extrabold text-xs px-3 py-1 rounded-full tracking-wide">
                   PRIME CONNECT EG
                 </span>
-                <span className="text-xs font-bold text-[#082A78] flex items-center gap-1">
+                <span className="text-xs font-bold text-[#082A78]">
                   Egypt&apos;s Premier BPO Growth Engine
-                  <svg className="w-3.5 h-3.5 text-[#075CE0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7-7m7-7H3" />
-                  </svg>
                 </span>
               </div>
             </ScrollReveal>
@@ -254,12 +251,6 @@ export default function PropellentHero() {
                     >
                       {loading ? "Submitting..." : "Book Discovery Call"}
                     </button>
-                    <p className="text-[11px] text-[#5F6C7C] text-center pt-2">
-                      Powered by{" "}
-                      <span className="font-bold text-[#082A78]">
-                        All States Careers
-                      </span>
-                    </p>
                   </form>
                 )}
               </div>

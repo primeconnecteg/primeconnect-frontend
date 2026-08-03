@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import PropellentNavbar from "@/components/PropellentNavbar";
+import PropellentFooter from "@/components/PropellentFooter";
 import BookingModal from "@/components/BookingModal";
-import { Award, Lock, CheckCircle2, Star, Quote, ShieldCheck } from "lucide-react";
+import ScrollReveal from "@/components/ScrollReveal";
+import { Bookmark, Lock, Check, Star, ShieldCheck } from "lucide-react";
 
 export default function CertificationsPage() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -28,7 +29,7 @@ export default function CertificationsPage() {
         "Customer experience (CX) excellence standards",
         "Process optimization & SLA management",
       ],
-      icon: Award,
+      icon: Bookmark,
     },
     {
       title: "GDPR Certified Training",
@@ -45,134 +46,150 @@ export default function CertificationsPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-white font-sans selection:bg-[#F4821F] selection:text-[#0a192f]">
-      <Navbar onOpenBooking={handleOpenBooking} />
+    <main className="min-h-screen bg-[#F2F4F7] font-sans text-[#0A0C0D] selection:bg-[#08BEEA] selection:text-[#04143F]">
+      {/* 1. Header Navigation matching exact website navbar */}
+      <PropellentNavbar />
 
-      {/* 1. Certifications Hero Banner */}
-      <section className="relative pt-32 pb-20 md:pt-36 md:pb-24 bg-[#0a192f] text-white overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
-          <line x1="0%" y1="100%" x2="100%" y2="30%" stroke="#F4821F" strokeWidth="1" strokeOpacity="0.15" />
-        </svg>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="max-w-3xl">
-            <p className="text-[#F4821F] font-semibold tracking-[0.15em] uppercase text-sm mb-4">
-              Compliance & Training
-            </p>
-            <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-6">
-              Certified Training <br />
-              <span className="text-[#F4821F]">Done.</span>
-            </h1>
-            <p className="text-white/60 text-lg leading-relaxed">
-              At Prime Connect EG, we hold our team to the highest global standards. Our staff has completed both COPC and GDPR certified training — so your client acquisition and data handling meet world-class compliance benchmarks from day one.
-            </p>
-          </div>
+      {/* 2. Hero Section */}
+      <section className="relative pt-16 pb-20 md:pt-24 md:pb-28 bg-[#04143F] text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <ScrollReveal direction="up">
+            <div className="max-w-3xl space-y-4">
+              <div className="inline-flex items-center gap-2 bg-[#082A78] rounded-full p-1 pr-4 border border-[#08BEEA]/30 shadow-sm">
+                <span className="bg-[#08BEEA] text-[#04143F] font-extrabold text-xs px-3 py-1 rounded-full tracking-wide uppercase">
+                  COMPLIANCE & TRAINING
+                </span>
+                <span className="text-xs font-bold text-white">
+                  Global Standards Built-In
+                </span>
+              </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+                Certified Training <span className="text-[#08BEEA]">Done.</span>
+              </h1>
+              <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-medium pt-2">
+                At Prime Connect EG, we hold our team to the highest global standards. Our staff has completed both COPC and GDPR certified training — so your client acquisition and data handling meet world-class compliance benchmarks from day one.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* 2. Certifications Cards */}
-      <section className="py-24 md:py-32 bg-gradient-to-b from-white to-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
+      {/* 3. Certifications Grid Cards */}
+      <section className="py-20 md:py-28 bg-[#F2F4F7]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {certifications.map((cert, index) => {
               const IconComp = cert.icon;
               return (
-                <div
-                  key={index}
-                  className="bg-[#0a192f] text-white rounded-3xl p-8 md:p-10 shadow-2xl shadow-[#0a192f]/20 border border-white/10"
-                >
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-14 h-14 bg-[#F4821F]/10 rounded-xl flex items-center justify-center">
-                      <IconComp className="w-7 h-7 text-[#F4821F]" />
-                    </div>
-                    <span className="flex items-center gap-2 px-4 py-2 bg-green-950/60 border border-green-500/30 text-green-400 rounded-full text-sm font-semibold">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      {cert.status}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">
-                    {cert.title}
-                  </h3>
-                  <p className="text-white/70 leading-relaxed mb-6">
-                    {cert.desc}
-                  </p>
-                  <div className="space-y-3">
-                    {cert.points.map((pt, pIdx) => (
-                      <div key={pIdx} className="flex items-center gap-3 text-sm text-white/80">
-                        <div className="w-1.5 h-1.5 bg-[#F4821F] rounded-full shrink-0" />
-                        <span>{pt}</span>
+                <ScrollReveal key={index} direction="up" delay={0.15 * index}>
+                  <div className="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-gray-200/80 flex flex-col justify-between h-full">
+                    <div>
+                      {/* Card Header Row */}
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="w-12 h-12 rounded-2xl bg-[#075CE0]/10 flex items-center justify-center text-[#075CE0]">
+                          <IconComp className="w-6 h-6" />
+                        </div>
+                        <span className="flex items-center gap-1.5 px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-600 rounded-full text-xs font-bold">
+                          <Check className="w-3.5 h-3.5 stroke-[3]" />
+                          {cert.status}
+                        </span>
                       </div>
-                    ))}
+
+                      {/* Title & Description */}
+                      <h3 className="text-2xl font-black text-[#04143F] mb-3 tracking-tight">
+                        {cert.title}
+                      </h3>
+                      <p className="text-[#5F6C7C] text-sm leading-relaxed mb-6 font-medium">
+                        {cert.desc}
+                      </p>
+
+                      {/* Bullet Points */}
+                      <ul className="space-y-3 pt-4 border-t border-gray-100">
+                        {cert.points.map((pt, pIdx) => (
+                          <li key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#5F6C7C] font-medium">
+                            <span className="w-2 h-2 rounded-full bg-[#08BEEA] mt-1.5 shrink-0" />
+                            <span>{pt}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
+                </ScrollReveal>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* 3. Partner Review Section */}
-      <section className="py-24 md:py-32 bg-[#0a192f] text-white relative overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
-          <line x1="0%" y1="50%" x2="100%" y2="50%" stroke="#F4821F" strokeWidth="0.5" strokeOpacity="0.1" />
-        </svg>
+      {/* 4. Partner Review Section */}
+      <section className="py-20 md:py-28 bg-[#04143F] text-white relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-6 relative z-10">
+          <ScrollReveal direction="up">
+            <div className="text-center mb-12 space-y-2">
+              <span className="text-[#08BEEA] font-bold text-xs uppercase tracking-widest block">
+                PARTNER REVIEW
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                What Our Partners Say
+              </h2>
+            </div>
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-12">
-            <p className="text-[#F4821F] font-semibold tracking-[0.15em] uppercase text-sm mb-3">
-              Partner Review
-            </p>
-            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
-              What Our Partners Say
-            </h2>
-          </div>
-
-          <div className="relative bg-gradient-to-br from-[#1e3a5f] to-[#0a192f] rounded-3xl p-10 md:p-14 border border-white/10">
-            <Quote className="w-12 h-12 text-[#F4821F]/30 absolute top-8 left-8" />
-            <div className="relative z-10">
-              <p className="text-xl md:text-2xl text-white/90 leading-relaxed font-light italic mb-8">
+            {/* Testimonial Box */}
+            <div className="bg-[#082A78]/70 backdrop-blur-md rounded-3xl p-8 sm:p-12 md:p-14 border border-[#075CE0]/30 shadow-2xl relative">
+              <div className="text-[#08BEEA] text-5xl font-serif leading-none font-bold mb-4 opacity-90 select-none">
+                “
+              </div>
+              <p className="text-lg sm:text-xl md:text-2xl text-slate-100 italic leading-relaxed font-light mb-8">
                 &quot;Working with Prime Connect EG has been an amazing experience. Their client hunting is effortless and precise — they make finding and closing new clients look easy. Their professional, fast-paced approach delivered results quicker than we expected. A truly reliable growth partner.&quot;
               </p>
 
-              <div className="flex items-center gap-4 pt-6 border-t border-white/10">
-                <div className="w-14 h-14 bg-[#F4821F] rounded-full flex items-center justify-center shrink-0">
-                  <span className="text-[#0a192f] font-black text-lg">OB</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#08BEEA] text-[#04143F] font-black text-base flex items-center justify-center shadow-md shrink-0">
+                    OB
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-base sm:text-lg">Omar Badawi</p>
+                    <p className="text-[#08BEEA] text-xs sm:text-sm font-semibold">CEO, Allstate Careers</p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <p className="text-white font-bold text-lg">Omar Badawi</p>
-                  <p className="text-[#F4821F] text-sm font-medium">CEO, Allstate Careers</p>
-                </div>
-                <div className="ml-auto flex gap-1 text-[#F4821F]">
+
+                <div className="flex items-center gap-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-[#F4821F] text-[#F4821F]" />
+                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* 4. Compliance You Can Trust CTA Section */}
-      <section className="py-24 md:py-32 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <ShieldCheck className="w-12 h-12 text-[#F4821F] mx-auto mb-6" />
-          <h2 className="text-3xl md:text-4xl font-black text-[#0a192f] mb-4">
-            Compliance You Can Trust
-          </h2>
-          <p className="text-[#0a192f]/60 text-lg mb-8 max-w-2xl mx-auto">
-            Our certified team is ready to handle your client acquisition with global compliance standards built in.
-          </p>
-          <button
-            onClick={handleOpenBooking}
-            className="px-8 py-4 bg-[#F4821F] text-[#0a192f] font-bold text-lg rounded-full hover:bg-[#F69947] transition-all duration-300 hover:scale-105 sonar-pulse shadow-lg shadow-[#F4821F]/30 cursor-pointer"
-          >
-            Book a Free Discovery Call
-          </button>
+      {/* 5. Compliance You Can Trust CTA Section */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <ScrollReveal direction="up">
+            <div className="w-16 h-16 rounded-2xl bg-[#075CE0]/10 text-[#075CE0] flex items-center justify-center mx-auto mb-6">
+              <ShieldCheck className="w-8 h-8" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-[#04143F] mb-4 tracking-tight">
+              Compliance You Can Trust
+            </h2>
+            <p className="text-[#5F6C7C] text-base md:text-lg mb-8 max-w-2xl mx-auto font-medium leading-relaxed">
+              Our certified team is ready to handle your client acquisition with global compliance standards built in.
+            </p>
+            <button
+              onClick={handleOpenBooking}
+              className="px-8 py-4 rounded-full bg-[#075CE0] hover:bg-[#082A78] text-white font-bold text-base transition-all shadow-xl hover:scale-105 cursor-pointer inline-flex items-center gap-2"
+            >
+              Book a Free Discovery Call
+            </button>
+          </ScrollReveal>
         </div>
       </section>
 
-      <Footer />
+      {/* 6. Website Footer */}
+      <PropellentFooter />
       <BookingModal isOpen={bookingModalOpen} onClose={handleCloseBooking} />
     </main>
   );

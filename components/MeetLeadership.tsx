@@ -20,7 +20,7 @@ export default function MeetLeadership({ onOpenBooking }: LeadershipProps) {
     {
       name: "Yousef Kholy",
       role: "Co-Founder & Partner",
-      phone: null,
+      phone: "+20 100 815 0955",
       initials: "YK",
       color: "bg-[#082A78] text-white"
     },

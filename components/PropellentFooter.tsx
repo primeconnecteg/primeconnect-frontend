@@ -23,7 +23,7 @@ export default function PropellentFooter() {
             <a href="#why-egypt" className="hover:text-[#08BEEA] transition-colors">Why Egypt</a>
             <a href="#how-it-works" className="hover:text-[#08BEEA] transition-colors">How It Works</a>
             <a href="#guarantee" className="hover:text-[#08BEEA] transition-colors">Our Guarantee</a>
-            <a href="#certifications" className="hover:text-[#08BEEA] transition-colors">Certifications</a>
+            <a href="/certifications" className="hover:text-[#08BEEA] transition-colors">Certifications</a>
             <a href="#contact" className="hover:text-[#08BEEA] transition-colors">Contact</a>
           </div>
 
@@ -35,10 +35,6 @@ export default function PropellentFooter() {
             <a href="mailto:info@primeconnecteg.com" className="text-gray-300 hover:text-white underline">
               info@primeconnecteg.com
             </a>
-          </p>
-
-          <p className="text-[#08BEEA] font-semibold">
-            Powered by All States Careers
           </p>
         </div>
       </div>

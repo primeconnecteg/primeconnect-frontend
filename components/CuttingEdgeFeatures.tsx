@@ -35,21 +35,21 @@ export default function CuttingEdgeFeatures() {
             <div className="bg-white rounded-3xl p-8 md:p-10 flex flex-col justify-between space-y-8 border border-gray-200/80 shadow-lg h-full">
               
               {/* Visual Graphic Display */}
-              <div className="relative h-64 w-full flex items-center justify-center pt-4">
+              <div className="flex flex-col gap-4 w-full md:relative md:h-72 md:flex-row md:gap-0 items-center justify-center pt-2 md:pt-4">
                 
                 {/* Floating Stat Card 1 */}
-                <div className="absolute left-4 top-4 bg-[#04143F] text-white rounded-2xl p-6 shadow-2xl border border-blue-400/20 w-64 z-10">
+                <div className="w-full md:w-64 bg-[#04143F] text-white rounded-2xl p-5 md:p-6 shadow-2xl border border-blue-400/20 md:absolute md:left-4 md:top-4 z-10">
                   <span className="text-xs font-bold text-[#08BEEA] uppercase tracking-wider block">
                     COST ADVANTAGE
                   </span>
-                  <span className="text-4xl font-black text-white block mt-1">30-40%</span>
+                  <span className="text-3xl md:text-4xl font-black text-white block mt-1">30-40%</span>
                   <span className="text-xs text-gray-300 font-medium block mt-1">
                     Savings vs US/UK equivalent services
                   </span>
                 </div>
 
                 {/* Floating Stat Card 2 */}
-                <div className="absolute right-4 bottom-4 bg-[#082A78] text-white rounded-2xl p-5 shadow-xl border border-blue-300/20 w-60 z-0">
+                <div className="w-full md:w-60 bg-[#082A78] text-white rounded-2xl p-5 shadow-xl border border-blue-300/20 md:absolute md:right-4 md:bottom-4 z-0">
                   <span className="text-xs font-bold text-[#08BEEA] uppercase tracking-wider block">
                     TALENT QUALITY
                   </span>
@@ -78,10 +78,10 @@ export default function CuttingEdgeFeatures() {
             <div className="bg-white rounded-3xl p-8 md:p-10 flex flex-col justify-between space-y-8 border border-gray-200/80 shadow-lg h-full">
               
               {/* Visual Graphic Display */}
-              <div className="relative h-64 w-full flex items-center justify-center pt-4">
+              <div className="flex flex-col gap-4 w-full md:relative md:h-72 md:flex-row md:gap-0 items-center justify-center pt-2 md:pt-4">
                 
                 {/* Floating Time Zone Card */}
-                <div className="absolute top-2 w-64 md:w-72 bg-[#075CE0] text-white rounded-2xl p-5 shadow-xl border border-white/20 z-0">
+                <div className="w-full md:w-64 bg-[#075CE0] text-white rounded-2xl p-5 shadow-xl border border-white/20 md:absolute md:left-4 md:top-2 z-0">
                   <span className="text-xs font-bold text-[#08BEEA] uppercase tracking-wider block">
                     GEOGRAPHIC BRIDGE
                   </span>
@@ -92,7 +92,7 @@ export default function CuttingEdgeFeatures() {
                 </div>
 
                 {/* Front Floating Accent Card */}
-                <div className="relative top-12 bg-white rounded-2xl p-5 shadow-2xl border border-gray-200 w-64 md:w-72 z-10 space-y-2">
+                <div className="w-full md:w-64 bg-white rounded-2xl p-5 shadow-2xl border border-gray-200 md:absolute md:right-4 md:bottom-2 z-10 space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-full bg-[#08BEEA] flex items-center justify-center text-[#04143F] font-bold text-xs">
                       ✓
