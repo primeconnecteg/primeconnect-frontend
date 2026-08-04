@@ -17,32 +17,39 @@ export default function PropellentNavbar() {
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const isHomePage = typeof window !== 'undefined' && window.location.pathname === "/";
+
     if (href.startsWith("/#") || href.startsWith("#")) {
-      e.preventDefault();
       const targetId = href.replace("/#", "").replace("#", "");
       const isMobile = mobileMenuOpen;
 
-      setMobileMenuOpen(false);
+      if (isHomePage) {
+        e.preventDefault();
+        setMobileMenuOpen(false);
 
-      const doScroll = () => {
-        const element = document.getElementById(targetId);
-        if (element) {
-          const headerOffset = 80;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        const doScroll = () => {
+          const element = document.getElementById(targetId);
+          if (element) {
+            const headerOffset = 80;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-          window.scrollTo({
-            top: Math.max(0, offsetPosition),
-            behavior: "smooth",
-          });
+            window.scrollTo({
+              top: Math.max(0, offsetPosition),
+              behavior: "smooth",
+            });
+          }
+        };
+
+        if (isMobile) {
+          // Defer scroll until after mobile menu drawer collapse animation settles DOM layout
+          setTimeout(doScroll, 180);
+        } else {
+          doScroll();
         }
-      };
-
-      if (isMobile) {
-        // Defer scroll until after mobile menu drawer collapse animation settles DOM layout
-        setTimeout(doScroll, 180);
       } else {
-        doScroll();
+        // Not on home page, let the browser navigate naturally to the href
+        setMobileMenuOpen(false);
       }
     } else {
       setMobileMenuOpen(false);
