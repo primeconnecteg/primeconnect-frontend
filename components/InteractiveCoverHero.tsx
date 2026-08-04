@@ -201,6 +201,9 @@ export default function InteractiveCoverHero() {
         }}
       />
 
+      {/* Seamless linear fade to the white/gray background of the next section to mix the colors perfectly */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-[#F2F4F7] z-0 pointer-events-none" />
+
       {/* Localized Hover-Interactive Diagonal Lines Canvas */}
       <canvas
         ref={canvasRef}
