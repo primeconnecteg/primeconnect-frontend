@@ -5,7 +5,7 @@ import PropellentNavbar from "@/components/PropellentNavbar";
 import PropellentFooter from "@/components/PropellentFooter";
 import BookingModal from "@/components/BookingModal";
 import ScrollReveal from "@/components/ScrollReveal";
-import { Bookmark, Lock, Check, Star, ShieldCheck } from "lucide-react";
+import { Bookmark, Lock, Check, Star, ShieldCheck, Clock } from "lucide-react";
 
 export default function CertificationsPage() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -135,26 +135,26 @@ export default function CertificationsPage() {
             </div>
 
             {/* Testimonial Box */}
-            <div className="bg-[#082A78]/70 backdrop-blur-md rounded-3xl p-8 sm:p-12 md:p-14 border border-[#075CE0]/30 shadow-2xl relative">
+            <div className="bg-[#082A78]/70 backdrop-blur-md rounded-3xl p-8 sm:p-12 md:p-14 border border-[#075CE0]/30 shadow-xl relative">
               <div className="text-[#08BEEA] text-5xl font-serif leading-none font-bold mb-4 opacity-90 select-none">
                 “
               </div>
-              <p className="text-lg sm:text-xl md:text-2xl text-slate-100 italic leading-relaxed font-light mb-8">
-                &quot;Working with Prime Connect EG has been an amazing experience. Their client hunting is effortless and precise — they make finding and closing new clients look easy. Their professional, fast-paced approach delivered results quicker than we expected. A truly reliable growth partner.&quot;
+              <p className="text-xl sm:text-2xl text-slate-100 italic leading-relaxed font-light mb-8">
+                &quot;Partner review pending.&quot;
               </p>
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-white/10">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#08BEEA] text-[#04143F] font-black text-base flex items-center justify-center shadow-md shrink-0">
-                    OB
+                  <div className="w-12 h-12 rounded-full bg-[#08BEEA]/20 border border-[#08BEEA]/40 text-[#08BEEA] font-bold text-sm flex items-center justify-center shrink-0">
+                    PC
                   </div>
                   <div>
-                    <p className="text-white font-bold text-base sm:text-lg">Omar Badawi</p>
-                    <p className="text-[#08BEEA] text-xs sm:text-sm font-semibold">CEO, Allstate Careers</p>
+                    <p className="text-white font-bold text-base">Partner Review</p>
+                    <p className="text-[#08BEEA] text-xs font-semibold">Pending Verification</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 text-amber-400">
+                <div className="flex items-center gap-1 text-amber-400 opacity-60">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                   ))}

@@ -104,17 +104,6 @@ export default function FaqSection() {
           </div>
         </div>
 
-        {/* Infrastructure Partner Verified Note */}
-        <ScrollReveal direction="up">
-          <div id="certifications" className="bg-[#082A78] text-white rounded-3xl p-8 text-center space-y-2 shadow-lg border border-blue-500/20 max-w-4xl mx-auto scroll-mt-28">
-            <span className="text-xs font-extrabold text-[#08BEEA] uppercase tracking-widest block">
-              INFRASTRUCTURE PARTNER — VERIFIED
-            </span>
-            <p className="text-base font-semibold text-gray-100">
-              Powered by <span className="text-[#08BEEA] font-bold">All States Careers</span> — our official CRM infrastructure partner, activating upon our first signed client.
-            </p>
-          </div>
-        </ScrollReveal>
 
         {/* Get In Touch Contact Form */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">

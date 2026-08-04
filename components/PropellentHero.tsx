@@ -75,8 +75,9 @@ export default function PropellentHero() {
                 We run the{" "}
                 <span className="relative inline-block text-[#075CE0]">
                   relationship.
-                  {/* Multi-Stroke Hand-Drawn Marker Underline matching photo */}
+                  {/* Multi-Stroke Hand-Drawn Marker Underline stretching full word length */}
                   <svg
+                    preserveAspectRatio="none"
                     className="absolute -bottom-2 sm:-bottom-3 left-0 w-full h-3.5 sm:h-4 text-[#08BEEA] pointer-events-none z-0 overflow-visible"
                     viewBox="0 0 220 22"
                     fill="none"
@@ -84,7 +85,7 @@ export default function PropellentHero() {
                   >
                     {/* Stroke 1 */}
                     <path
-                      d="M3 5C55 3 165 2.5 216 5.5"
+                      d="M0 5C55 3 165 2.5 220 5.5"
                       stroke="currentColor"
                       strokeWidth="3.5"
                       strokeLinecap="round"
@@ -92,7 +93,7 @@ export default function PropellentHero() {
                     />
                     {/* Stroke 2 */}
                     <path
-                      d="M7 11.5C65 9.5 155 9.5 213 12"
+                      d="M2 11.5C65 9.5 155 9.5 218 12"
                       stroke="currentColor"
                       strokeWidth="3"
                       strokeLinecap="round"
@@ -100,7 +101,7 @@ export default function PropellentHero() {
                     />
                     {/* Stroke 3 */}
                     <path
-                      d="M2 18C48 16 172 16 218 18.5"
+                      d="M0 18C48 16 172 16 220 18.5"
                       stroke="currentColor"
                       strokeWidth="2.5"
                       strokeLinecap="round"

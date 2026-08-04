@@ -76,16 +76,17 @@ body {
 }
 
 .animate-hero-fade-in-1 {
-  animation: heroFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroFadeInUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
 }
 
 .animate-hero-fade-in-2 {
-  animation: heroFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  animation: heroFadeInUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
   opacity: 0;
 }
 
 .animate-hero-fade-in-3 {
-  animation: heroFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  animation: heroFadeInUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
   opacity: 0;
 }
 
