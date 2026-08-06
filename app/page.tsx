@@ -11,14 +11,12 @@ import MetricsAndTestimonials from "@/components/MetricsAndTestimonials";
 import FaqSection from "@/components/FaqSection";
 import CtaBannerSection from "@/components/CtaBannerSection";
 import PropellentFooter from "@/components/PropellentFooter";
-import LoadingScreen from "@/components/LoadingScreen";
+
 
 export default function Home() {
       return (
             <main className="min-h-screen bg-[#F2F4F7] text-[#0A0C0D] font-sans selection:bg-[#08BEEA] selection:text-[#04143F]">
-                  {/* Loading Screen Overlay */}
-                  <LoadingScreen />
-                  
+                  {/* Loading Screen Overlay removed for now */}
                   {/* 0. Interactive Sky Gradient Cover Hero (New Start Section) */}
                   <InteractiveCoverHero />
 

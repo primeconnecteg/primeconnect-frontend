@@ -78,7 +78,7 @@ export default function PropellentHero() {
                   {/* Multi-Stroke Hand-Drawn Marker Underline stretching full word length */}
                   <svg
                     preserveAspectRatio="none"
-                    className="absolute -bottom-4 sm:-bottom-4 left-0 w-full h-3.5 sm:h-4 text-[#08BEEA] pointer-events-none z-0 overflow-visible"
+                    className="absolute -bottom-4 sm:-bottom-4 -left-[5%] sm:left-0 w-[110%] sm:w-full h-3.5 sm:h-4 text-[#08BEEA] pointer-events-none z-0 overflow-visible"
                     viewBox="0 0 220 22"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
